@@ -4,7 +4,7 @@ setwd("C:/Users/adria/OneDrive/Bedu - Data Science/Programación y estadística 
 
 #Con el último data frame obtenido en el postwork de la sesión 2, elabora tablas 
 #de frecuencias relativas para estimar las siguientes probabilidades:
-df <- read.csv("postwork2.csv")
+df <- read.csv("Postwork_02.csv")
 
 #La probabilidad (marginal) de que el equipo que juega en casa anote x goles (x=0,1,2,)
 
