@@ -68,4 +68,4 @@ data <- do.call(rbind, unname(SP1))
 (data)
 
 # Exportamos el dataframe a CSV
-write.csv(data, "data.csv")
+write.csv(data, "Postwork_02.csv")
