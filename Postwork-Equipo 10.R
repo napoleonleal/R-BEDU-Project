@@ -94,7 +94,7 @@ data <- mutate(data, Date = as.Date(Date, "%d/%m/%y"))
 
 data #data frame final solo con los datos elegidos
 
-write.csv(data, file = 'Postwork_02.csv') #guardamos el archivo
+write.csv(data, file = 'Postwork_02.csv') #guardamos el df en un archivo csv
 
 #POSTWORK 3---------------------------------------------------------------------
 library(ggplot2)
