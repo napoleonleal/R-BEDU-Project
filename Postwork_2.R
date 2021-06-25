@@ -38,7 +38,7 @@ columns <- c(
 )
 
 # Extraemos las columnas de interes
-SP1 = lapply(SP1, select, all_of(columns)) # Warning sin el all_of()
+SP1 <- lapply(SP1, select, all_of(columns)) # Warning sin el all_of()
 
 ####################################################################################
 # 4     Asegúrate de que los elementos de las columnas correspondientes de los 
@@ -51,7 +51,7 @@ SP1 = lapply(SP1, select, all_of(columns)) # Warning sin el all_of()
 lapply(SP1, str)
 
 # Cambiamos un formato de fecha distinto en un CSV usando regex
-csv.name = "SP1.1718"
+csv.name <- "SP1.1718"
 SP1[[csv.name]]$Date <- gsub("([0-3][0-9])/([0-1][0-9])/([0-3][0-9])$"
       , "\\1/\\2/20\\3"
       , SP1[[csv.name]]$Date)
