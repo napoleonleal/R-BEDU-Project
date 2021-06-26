@@ -113,7 +113,7 @@ colnames(goles.local)=c("Goles","Frecuencia", "Prob.Marginal")
 goles.local #probabilidad final
 
 #Realizamos una gráfica para vizualizar los datos
-e.local <- ggplot(goles.local, aes(x = Goles, y = probabilidad.local)) + geom_bar(stat="identity", colour='black', fill='#99CCFF') +
+e.local <- ggplot(goles.local, aes(x = Goles, y = Prob.Marginal)) + geom_bar(stat="identity", colour='black', fill='#99CCFF') +
   ggtitle('Probabilidad de que el equipo local anote goles') +
   ylab('Probabilidad de ocurrencia') +
   theme_light()
