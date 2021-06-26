@@ -69,7 +69,7 @@ library(dplyr)
 #Utilizaremos los datos de las temporadas 2017/2018, 2018/2019 y 2019/2020
 
 #Descargamos los datos
-setwd("~/Documents/BEDU/R/Postwork")
+setwd(getwd())
 
 liga1718 <- "https://www.football-data.co.uk/mmz4281/1718/SP1.csv"
 liga1819 <- "https://www.football-data.co.uk/mmz4281/1819/SP1.csv"
@@ -79,7 +79,7 @@ download.file(url = liga1718, destfile = "liga1718.csv", mode = "wb")
 download.file(url = liga1819, destfile = "liga1819.csv", mode = "wb")
 download.file(url = liga1920, destfile = "liga1920.csv", mode = "wb")
 
-temporadas <- lapply(dir(), read.csv)  #guardamos los archivos en una lista
+temporadas <- lapply(dir(pattern="csv$"), read.csv)  #guardamos los archivos en una lista
 
 #revisamos que tipo de objeto son
 str(temporadas); head(temporadas); View(temporadas); summary(temporadas)
