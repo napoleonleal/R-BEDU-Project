@@ -113,7 +113,12 @@ colnames(goles.local)=c("Goles","Frecuencia", "Prob.Marginal")
 goles.local #probabilidad final
 
 #Realizamos una gráfica para vizualizar los datos
-ggplot(goles.local, aes(x = Goles, y = pm.local)) + geom_bar(stat="identity")
+e.local <- ggplot(goles.local, aes(x = Goles, y = probabilidad.local)) + geom_bar(stat="identity", colour='black', fill='#99CCFF') +
+  ggtitle('Probabilidad de que el equipo local anote goles') +
+  ylab('Probabilidad de ocurrencia') +
+  theme_light()
+
+ggplotly(e.local) #versión interactiva
 
 #Ahora calcularemos la probabilidad para el equipo visitante
 goles.visitante <- table(data$FTAG)
@@ -124,7 +129,12 @@ colnames(goles.visitante)=c("Goles","Freq", "Prob.Marginal")
 goles.visitante #probabilidad final
 
 #Realizamos una gráfica para vizualizar los datos
-ggplot(goles.visitante, aes(x = Goles, y = Pmg)) + geom_bar(stat="identity")
+e.visitante <- ggplot(goles.visitante, aes(x = Goles, y = pm.vis)) + geom_bar(stat="identity", colour='black', fill='#FFCC99') +
+  ggtitle('Probabilidad de que el equipo visitante anote goles') +
+  ylab('Probabilidad de que el equipo visitante anote goles') +
+  theme_light()
+
+ggplotly(e.visitante) #versión interactiva
 
 #La probabilidad conjunta de que el equipo que juega en casa anote x goles y 
 #el equipo que juega como visitante anote y goles 
@@ -150,4 +160,57 @@ p
 ggplotly(p) #versión interactiva
 
 #POSTWORK 4---------------------------------------------------------------------
+#Ahora obtendremos una tabla de cocientes al dividir las probabilidades conjuntas
+#por el producto de las probabilidades correspondientes
+
+df <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_02.csv")
+total_partidos <- length(df$FTHG)
+
+#Para la probabilidad marginal de los goles metidos por locales 
+goles.local <-table(df$FTHG)
+(prob.marginal.local = prop.table(goles.local)) #probabilidad marginal
+(table.local = data.frame(goles.local, prob.marginal.local, check.names = T)[-3])
+(colnames(table.local) = c("Goles", "Frecuencia", "P. Marginal")) #Renombramos las columnas
+
+table.local
+
+#Para los goles metidos por el equipo visitante
+goles.visitante <-table(df$FTAG)
+(prob.marginal.visitantes <- prop.table(goles.visitante)) #probabilidad marginal
+(table.visitante = data.frame(goles.visitante, prob.marginal.visitantes, check.names = T)[-3])
+(colnames(table.visitante) = c("Goles", "Frecuencia", "P. Marginal")) #Renombramos las columnas
+table.visitante
+
+#hacemos 2 tablas con las probabilidades individuales repitiendolas en las columnas
+visitante <- rbind(table.visitante$`P. Marginal`) #probabilidad visitante
+for (i in 1:8) {
+  visitante <-rbind(visitante,table.visitante$`P. Marginal`)
+}
+visitante
+
+(local <- cbind(table.local$`P. Marginal`)) #probabilidad local
+for (i in 1:6) {
+  local <-cbind(local,table.local$`P. Marginal`)
+}
+local
+
+producto.probabilidad <- local*visitante #Realizamos el producto
+
+(producto.probabilidad <- producto.probabilidad)
+(producto <- data.frame(producto.probabilidad))
+
+#La probabilidad conjunta 
+goles.partidos = table(df$FTHG, df$FTAG, dnn=c("x", "y"))
+prob.conjunta = prop.table(goles.partidos)
+(prob.conjunta <- prob.conjunta)
+
+#Realizamos el cociente
+cociente <- prob.conjunta/producto
+cociente
+
+(colnames(cociente) = c(0, 1, 2, 3, 4, 5,6)) #Cambiamos los nombres
+(rownames(cociente) = c(0, 1, 2, 3, 4, 5, 6,7,8))
+
+cociente #df final del cociente
+
 
