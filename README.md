@@ -838,13 +838,13 @@ independiente.
 ## 2.1            3               2 1.0142554 0.7911646 0.7151448            1
 ```
 
-### Conclusión
+### Conclusiones
 
 Podemos apreciar que la probabilidad no es en todos los casos de 1.  Para la independencia de variables es necesario que todos los cocientes sean uno, pero tomando en cuenta que es en teoría ese argumento; por la cercania de los valores podríamos considerarlas como independientes, pero tomando en cuenta la media, acorde al Teorema del Limite Central, vimos que el valor es alejado de 1 mediante el procedimiento bootstrap, del cual encontraremos las medias muestrales del 'resampling' de 1000 muestras.
 
-Por lo que la hipótesis de que las variables sean independientes es descartada al no estar la media de las medias muestrales (la media poblacional) en el rango de 1 +- el intervalo de confianza utilizando las medias muestrales generadas por bootstrap.
+Por lo que la hipótesis de que las variables sean independientes es descartada al no estar la media de las medias muestrales (la media poblacional) en el rango de 1 ± el intervalo de confianza utilizando el promedio de las medias muestrales generadas por bootstrap.
 
-Este resultado tiene sentido, al saber que el evento de que un equipo meta gol depende de su interacción con el otro equipo. Por ejemplo, que un jugador lesione a un jugador de otro equipo, incluso se puede considerar si el equipo entra en estrés al ver que falta poco tiempo y no superan el marcador.
+Este resultado tiene sentido, al saber que el evento de que un equipo meta gol depende de su interacción con el otro equipo. Por ejemplo, que un jugador lesione intencionalmente al jugador de otro equipo, incluso se puede considerar si el equipo entra en estrés al ver que falta poco tiempo y no superan el marcador.
 
 En el área de ciencia de datos será una parte importante identificar las variables dependientes, puesto que a partir de la relación entre ellas se encontrarán patrones y tendencias. Identificarlas para hacer una propuesta a partir de ello va a dar valor a los datos. 
 
