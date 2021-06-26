@@ -213,4 +213,77 @@ cociente
 
 cociente #df final del cociente
 
+#Para determinar si el número de goles del equipo local o el de el equipo
+#visitante son dependientes o independientes, realizaremos un 
+#procedimiento de bootstrap para obtener más cocientes similares
+#y analizar la distribución
+
+#Transformamos el data frame a columna para facilitar el bootstrap
+aux = matrix(, nrow=9*7, 1)
+indice = 1
+for(i in 1:7){
+  for(k in 1:9){
+    aux[indice,1] = cociente[k,i]
+    indice= indice + 1
+  }
+}
+
+#Este es nuestro dataframe, con la informacion de los cocientes
+dataframe = as.data.frame(aux)
+
+# Utilizamos la libreria "rsample" para poder hacer las muestras bootstrap
+library(rsample)
+
+# Fijamos la semilla para poder reproducir los datos
+set.seed(83928782)
+
+# Aplicamos la funcion bootstraps, para generar 1000 muestras, guardandolas en boot
+boot <- bootstraps(dataframe, times = 1000)
+
+# Confirmamos la dimensión de nuestras muestras
+dim(as.data.frame(boot$splits[[5]]))
+
+# Guardamos nuestro dataframe para poder añadir las muestras para facilitar su
+#analisis
+data_f = dataframe
+
+# Juntamos las columnas de nuestras muestras, para poder aplicar apply directo
+for(i in 1:length(boot$splits)){
+  data_f = cbind(data_f, as.data.frame(boot$splits[[i]]))
+}
+
+# Calculamos la media por cociente (por renglón)
+mean_conj = apply(data_f, 1, mean)
+
+# De forma analoga calculamos la varianza (por renglón)
+var_conj = apply(data_f, 1, var)
+
+# Juntamos en un solo dataframe las columnas, media, varianza para su análisis
+analisis <- cbind(dataframe, mean_conj, var_conj)
+
+# Utilizamos el teorema de límite central, para poder calcular la probabilidad
+# de la distribución normal, ya que nuestra muestra
+# contiene 1000 datos
+analisis <- mutate(analisis, probabilidad = pnorm(q = V1, mean = mean_conj, sd = sqrt(var_conj/1000)))
+
+# Hacemos los cambios en los nombres, y añadimos el numero de goles para su presentación
+analisis <- cbind(c(rep(0,9), rep(1,9), rep(2,9), rep(3,9), rep(4,9), rep(5,9), rep(6,9)),analisis)
+analisis <- cbind(rep(seq(0,8,1),7),analisis)
+(colnames(analisis) = c("goles local", "goles visitante","Cociente", "Media", "Varianza", "Probabilidad"))
+
+# Utilizamos la librería dplyr para el análisis
+library(dplyr)
+
+# Filtramos los valores en donde el cociente es proporcional a 1
+# Ya que esto significa que la probabilidad grupal es igual a la probabilidad
+# independiente
+(dependiente <- filter(analisis, Cociente >= 0.97 & Cociente <= 1.04))
+
+# Podemos apreciar que la probabilidad en todos los casos es de 1, por lo que
+# en un primer vistazo, podríamos aceptarlos como independientes, pero
+# tomando en cuenta la media, vemos que el valor es alejado de 1
+# esto debido al procedimiento bootstrap, por el cual encontraremos
+# medias similares en todos los datos, ya que los posiciona aleatoriamente en 
+# todas las muestras, por lo que podemos tomar como inconcluso e insuficiente
+# el análisis estadístico
 
