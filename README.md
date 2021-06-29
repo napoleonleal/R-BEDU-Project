@@ -62,6 +62,8 @@ Con table generamos una tabla que nos indica la frecuencia de los goles:
 ?table
 ```
 
+## Probabilidad Marginal Equipo Local
+
 
 ```r
 (total_partidos = length(df$FTHG)) #total de los partidos
@@ -72,15 +74,14 @@ Con table generamos una tabla que nos indica la frecuencia de los goles:
 ```
 
 ```r
-(prob.marginal = goles.local / total_partidos) #probabilidad marginal 
+prob.marginal = goles.local / total_partidos #probabilidad marginal 
+(round(prob.marginal, 3))
 ```
 
 ```
 ## 
-##           0           1           2           3           4           5 
-## 0.231578947 0.347368421 0.260526316 0.100000000 0.036842105 0.021052632 
-##           6 
-## 0.002631579
+##     0     1     2     3     4     5     6 
+## 0.232 0.347 0.261 0.100 0.037 0.021 0.003
 ```
 
 ```r
@@ -102,18 +103,21 @@ table.local #tabla final con las probabilidades para el equipo local
 ## 7     6          1        0.26
 ```
 
+## Probabilidad Marginal Equipo Visitante
+
 En el caso del equipo vistante el procedimiento es análogo.
 
 
 ```r
 goles.visitante <-table(df$FTAG) #total de los partidos
-(prob.marginal = goles.visitante / total_partidos) #probabilidad marginal
+prob.marginal = goles.visitante / total_partidos #probabilidad marginal
+(round(prob.marginal,3))
 ```
 
 ```
 ## 
-##           0           1           2           3           4           5 
-## 0.357894737 0.352631579 0.213157895 0.047368421 0.023684211 0.005263158
+##     0     1     2     3     4     5 
+## 0.358 0.353 0.213 0.047 0.024 0.005
 ```
 
 ```r
@@ -134,6 +138,8 @@ table.visitante #tabla final de probabilidades para el equipo visitante
 ## 6     5          2        0.53
 ```
 
+## Probabilidad Conjunta
+
 La probabilidad conjunta toma en cuenta la probabilidad de dos eventos
 sobre el total de resultados posibles.
 
@@ -143,22 +149,7 @@ goles y el visitante '*y'* goles:
 
 ```r
 goles.partidos = table(df$FTHG, df$FTAG, dnn=c("x", "y"))
-(prob.conjunta = prop.table(goles.partidos))
-```
-
-```
-##    y
-## x             0           1           2           3           4           5
-##   0 0.086842105 0.073684211 0.039473684 0.021052632 0.005263158 0.005263158
-##   1 0.113157895 0.128947368 0.084210526 0.013157895 0.007894737 0.000000000
-##   2 0.102631579 0.092105263 0.052631579 0.007894737 0.005263158 0.000000000
-##   3 0.036842105 0.036842105 0.018421053 0.005263158 0.002631579 0.000000000
-##   4 0.010526316 0.013157895 0.010526316 0.000000000 0.002631579 0.000000000
-##   5 0.005263158 0.007894737 0.007894737 0.000000000 0.000000000 0.000000000
-##   6 0.002631579 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000
-```
-
-```r
+prob.conjunta = prop.table(goles.partidos)
 (prob.conjunta <- round(prob.conjunta * 100,2))
 ```
 
@@ -247,6 +238,7 @@ Seleccionamos sólo algunas columnas de interés:
 temporadas <- lapply(temporadas, select, c("Date", "HomeTeam", "AwayTeam","FTHG","FTAG","FTR")) 
 ```
 
+## Data Frame completo
 Revisamos que las columnas sean del mismo tipo, corregimos el tipo de
 dato de la columna `Date` y unimos en un solo data frame:
 
@@ -326,21 +318,16 @@ goles.local #probabilidad final
 Realizamos una gráfica para vizualizar los datos:
 
 
+
+## Figura 3.1 P(x) Marginal Equipo Local meta Gol
+
+
 ```r
-library(dplyr)
-library(ggplot2)
-library(viridis)
-as.data.frame(goles.local) %>% 
-  ggplot() + geom_bar(aes(Goles, Prob.Marginal, fill = Prob.Marginal), stat = 'identity') + 
-  ggtitle('Probabilidad de que el equipo local anote goles') +
-  ylab('Probabilidad de ocurrencia [%]') +
-  scale_fill_viridis(name="Pmarginal", direction = 1) + 
-  theme_minimal() -> e.local
 ggplotly(e.local) #versión interactiva
 ```
 
-
 <img src="https://github.com/itzamango/postwork-equipo-10/blob/main/img/1.png?raw=true">
+
 
 
 Ahora calcularemos la probabilidad para el equipo visitante:
@@ -369,13 +356,11 @@ goles.visitante #probabilidad final
 Realizamos una gráfica para vizualizar los datos
 
 
+
+## Figura 3.2 P(y) Marginal Equipo Visitante meta Gol
+
+
 ```r
-as.data.frame(goles.visitante) %>% 
-  ggplot() + geom_bar(aes(Goles, pm.vis, fill = pm.vis), stat = 'identity') + 
-  ggtitle('Probabilidad de que el equipo visitante anote goles') +
-  ylab('Probabilidad de ocurrencia [0,1]') +
-  scale_fill_viridis(name="Pmarginal", direction = 1) +
-  theme_minimal() -> e.visitante
 ggplotly(e.visitante) #versión interactiva
 ```
 
@@ -389,35 +374,7 @@ goles y el equipo que juega como visitante anote '*y'* goles:
 
 ```r
 goles.partidos = table(data$FTHG, data$FTAG, dnn=c("x", "y"))
-(prob.conjunta = prop.table(goles.partidos))
-```
-
-```
-##    y
-## x             0           1           2           3           4           5
-##   0 0.078070175 0.080701754 0.045614035 0.018421053 0.005263158 0.004385965
-##   1 0.115789474 0.114912281 0.068421053 0.017543860 0.008771930 0.001754386
-##   2 0.087719298 0.093859649 0.061403509 0.011403509 0.008771930 0.001754386
-##   3 0.044736842 0.032456140 0.024561404 0.006140351 0.001754386 0.001754386
-##   4 0.014035088 0.010526316 0.007017544 0.000000000 0.003508772 0.000000000
-##   5 0.008771930 0.005263158 0.004385965 0.000000000 0.000877193 0.000000000
-##   6 0.002631579 0.001754386 0.000000000 0.000877193 0.000000000 0.000000000
-##   7 0.000000000 0.000877193 0.000000000 0.000000000 0.000000000 0.000000000
-##   8 0.000000000 0.000000000 0.000877193 0.000000000 0.000000000 0.000000000
-##    y
-## x             6
-##   0 0.000000000
-##   1 0.000000000
-##   2 0.001754386
-##   3 0.000877193
-##   4 0.000000000
-##   5 0.000000000
-##   6 0.000000000
-##   7 0.000000000
-##   8 0.000000000
-```
-
-```r
+prob.conjunta = prop.table(goles.partidos)
 (prob.conjunta <- round(prob.conjunta * 100,2))
 ```
 
@@ -459,14 +416,11 @@ heat.df
 ```
 
 
+
+## Figura 3.3 P(x∩y) conjunta
+
+
 ```r
-p <- ggplot(heat.df, aes(Local, Visitante, fill= Probabilidad)) + #gráficamos
-  geom_raster() +
-  scale_fill_viridis_c(name="Probabilidad [%]") +
-  ggtitle("Probabilidad conjunta de anotación") +
-  ylab('Visitante [goles]') +
-  xlab('Local [goles]')
-#p
 ggplotly(p) #versión interactiva
 ```
 
@@ -544,30 +498,20 @@ visitante <- rbind(table.visitante$`P. Marginal`) #probabilidad visitante
 for (i in 1:8) {
   visitante <-rbind(visitante,table.visitante$`P. Marginal`)
 }
-visitante
+(round(visitante, 3))
 ```
 
 ```
-##            [,1]      [,2]      [,3]       [,4]       [,5]        [,6]
-##  [1,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [2,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [3,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [4,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [5,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [6,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [7,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [8,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##  [9,] 0.3394737 0.3552632 0.2072368 0.05921053 0.02828947 0.007894737
-##              [,7]
-##  [1,] 0.002631579
-##  [2,] 0.002631579
-##  [3,] 0.002631579
-##  [4,] 0.002631579
-##  [5,] 0.002631579
-##  [6,] 0.002631579
-##  [7,] 0.002631579
-##  [8,] 0.002631579
-##  [9,] 0.002631579
+##        [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]
+##  [1,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [2,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [3,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [4,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [5,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [6,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [7,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [8,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
+##  [9,] 0.339 0.355 0.207 0.059 0.028 0.008 0.003
 ```
 
 ```r
@@ -575,59 +519,40 @@ local <- cbind(table.local$`P. Marginal`) #probabilidad local
 for (i in 1:6) {
   local <-cbind(local,table.local$`P. Marginal`)
 }
-local
+(round(local, 3))
 ```
 
 ```
-##               [,1]         [,2]         [,3]         [,4]         [,5]
-##  [1,] 0.2388157895 0.2388157895 0.2388157895 0.2388157895 0.2388157895
-##  [2,] 0.3309210526 0.3309210526 0.3309210526 0.3309210526 0.3309210526
-##  [3,] 0.2644736842 0.2644736842 0.2644736842 0.2644736842 0.2644736842
-##  [4,] 0.1032894737 0.1032894737 0.1032894737 0.1032894737 0.1032894737
-##  [5,] 0.0388157895 0.0388157895 0.0388157895 0.0388157895 0.0388157895
-##  [6,] 0.0177631579 0.0177631579 0.0177631579 0.0177631579 0.0177631579
-##  [7,] 0.0046052632 0.0046052632 0.0046052632 0.0046052632 0.0046052632
-##  [8,] 0.0006578947 0.0006578947 0.0006578947 0.0006578947 0.0006578947
-##  [9,] 0.0006578947 0.0006578947 0.0006578947 0.0006578947 0.0006578947
-##               [,6]         [,7]
-##  [1,] 0.2388157895 0.2388157895
-##  [2,] 0.3309210526 0.3309210526
-##  [3,] 0.2644736842 0.2644736842
-##  [4,] 0.1032894737 0.1032894737
-##  [5,] 0.0388157895 0.0388157895
-##  [6,] 0.0177631579 0.0177631579
-##  [7,] 0.0046052632 0.0046052632
-##  [8,] 0.0006578947 0.0006578947
-##  [9,] 0.0006578947 0.0006578947
+##        [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]
+##  [1,] 0.239 0.239 0.239 0.239 0.239 0.239 0.239
+##  [2,] 0.331 0.331 0.331 0.331 0.331 0.331 0.331
+##  [3,] 0.264 0.264 0.264 0.264 0.264 0.264 0.264
+##  [4,] 0.103 0.103 0.103 0.103 0.103 0.103 0.103
+##  [5,] 0.039 0.039 0.039 0.039 0.039 0.039 0.039
+##  [6,] 0.018 0.018 0.018 0.018 0.018 0.018 0.018
+##  [7,] 0.005 0.005 0.005 0.005 0.005 0.005 0.005
+##  [8,] 0.001 0.001 0.001 0.001 0.001 0.001 0.001
+##  [9,] 0.001 0.001 0.001 0.001 0.001 0.001 0.001
 ```
 
 ```r
 producto.probabilidad <- local*visitante #Realizamos el producto
 producto.probabilidad <- producto.probabilidad
-(producto <- data.frame(producto.probabilidad))
+producto <- data.frame(producto.probabilidad)
+(round(producto, 3))
 ```
 
 ```
-##            X1           X2           X3           X4           X5           X6
-## 1 0.081071676 0.0848424515 0.0494914301 1.414041e-02 0.0067559730 1.885388e-03
-## 2 0.112338989 0.1175640582 0.0685790339 1.959401e-02 0.0093615824 2.612535e-03
-## 3 0.089781856 0.0939577562 0.0548086911 1.565963e-02 0.0074818213 2.087950e-03
-## 4 0.035064058 0.0366949446 0.0214053843 6.115824e-03 0.0029220048 8.154432e-04
-## 5 0.013176939 0.0137898199 0.0080440616 2.298303e-03 0.0010980783 3.064404e-04
-## 6 0.006030125 0.0063105956 0.0036811807 1.051766e-03 0.0005025104 1.402355e-04
-## 7 0.001563366 0.0016360803 0.0009543802 2.726801e-04 0.0001302805 3.635734e-05
-## 8 0.000223338 0.0002337258 0.0001363400 3.895429e-05 0.0000186115 5.193906e-06
-## 9 0.000223338 0.0002337258 0.0001363400 3.895429e-05 0.0000186115 5.193906e-06
-##             X7
-## 1 6.284626e-04
-## 2 8.708449e-04
-## 3 6.959834e-04
-## 4 2.718144e-04
-## 5 1.021468e-04
-## 6 4.674515e-05
-## 7 1.211911e-05
-## 8 1.731302e-06
-## 9 1.731302e-06
+##      X1    X2    X3    X4    X5    X6    X7
+## 1 0.081 0.085 0.049 0.014 0.007 0.002 0.001
+## 2 0.112 0.118 0.069 0.020 0.009 0.003 0.001
+## 3 0.090 0.094 0.055 0.016 0.007 0.002 0.001
+## 4 0.035 0.037 0.021 0.006 0.003 0.001 0.000
+## 5 0.013 0.014 0.008 0.002 0.001 0.000 0.000
+## 6 0.006 0.006 0.004 0.001 0.001 0.000 0.000
+## 7 0.002 0.002 0.001 0.000 0.000 0.000 0.000
+## 8 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+## 9 0.000 0.000 0.000 0.000 0.000 0.000 0.000
 ```
 
 La probabilidad conjunta:
@@ -636,33 +561,25 @@ La probabilidad conjunta:
 ```r
 goles.partidos = table(df$FTHG, df$FTAG, dnn=c("x", "y"))
 prob.conjunta = prop.table(goles.partidos)
-(prob.conjunta <- prob.conjunta)
+prob.conjunta <- prob.conjunta
+(round(prob.conjunta,3))
 ```
 
 ```
 ##    y
-## x              0            1            2            3            4
-##   0 0.0782894737 0.0828947368 0.0506578947 0.0177631579 0.0059210526
-##   1 0.1118421053 0.1230263158 0.0625000000 0.0223684211 0.0085526316
-##   2 0.0855263158 0.0967105263 0.0598684211 0.0118421053 0.0078947368
-##   3 0.0394736842 0.0315789474 0.0217105263 0.0059210526 0.0026315789
-##   4 0.0151315789 0.0131578947 0.0072368421 0.0006578947 0.0026315789
-##   5 0.0072368421 0.0052631579 0.0046052632 0.0000000000 0.0006578947
-##   6 0.0019736842 0.0019736842 0.0000000000 0.0006578947 0.0000000000
-##   7 0.0000000000 0.0006578947 0.0000000000 0.0000000000 0.0000000000
-##   8 0.0000000000 0.0000000000 0.0006578947 0.0000000000 0.0000000000
-##    y
-## x              5            6
-##   0 0.0032894737 0.0000000000
-##   1 0.0019736842 0.0006578947
-##   2 0.0013157895 0.0013157895
-##   3 0.0013157895 0.0006578947
-##   4 0.0000000000 0.0000000000
-##   5 0.0000000000 0.0000000000
-##   6 0.0000000000 0.0000000000
-##   7 0.0000000000 0.0000000000
-##   8 0.0000000000 0.0000000000
+## x       0     1     2     3     4     5     6
+##   0 0.078 0.083 0.051 0.018 0.006 0.003 0.000
+##   1 0.112 0.123 0.062 0.022 0.009 0.002 0.001
+##   2 0.086 0.097 0.060 0.012 0.008 0.001 0.001
+##   3 0.039 0.032 0.022 0.006 0.003 0.001 0.001
+##   4 0.015 0.013 0.007 0.001 0.003 0.000 0.000
+##   5 0.007 0.005 0.005 0.000 0.001 0.000 0.000
+##   6 0.002 0.002 0.000 0.001 0.000 0.000 0.000
+##   7 0.000 0.001 0.000 0.000 0.000 0.000 0.000
+##   8 0.000 0.000 0.001 0.000 0.000 0.000 0.000
 ```
+
+## Cociente de las probabilidades
 
 Realizamos el cociente:
 
@@ -672,20 +589,20 @@ cociente <- prob.conjunta/producto
 #cociente
 colnames(cociente) = c(0, 1, 2, 3, 4, 5,6) #Cambiamos los nombres
 rownames(cociente) = c(0, 1, 2, 3, 4, 5, 6,7,8)
-cociente #df final del cociente
+(round(cociente,2)) #df final del cociente
 ```
 
 ```
-##           0         1         2         3         4         5         6
-## 0 0.9656822 0.9770432 1.0235690 1.2561983 0.8764175 1.7447199 0.0000000
-## 1 0.9955769 1.0464620 0.9113573 1.1415949 0.9135882 0.7554672 0.7554672
-## 2 0.9526013 1.0292980 1.0923162 0.7562189 1.0551892 0.6301824 1.8905473
-## 3 1.1257591 0.8605803 1.0142554 0.9681529 0.9006073 1.6135881 2.4203822
-## 4 1.1483379 0.9541745 0.8996503 0.2862524 2.3965313 0.0000000 0.0000000
-## 5 1.2001148 0.8340192 1.2510288 0.0000000 1.3092162 0.0000000 0.0000000
-## 6 1.2624585 1.2063492 0.0000000 2.4126984 0.0000000 0.0000000 0.0000000
-## 7 0.0000000 2.8148148 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
-## 8 0.0000000 0.0000000 4.8253968 0.0000000 0.0000000 0.0000000 0.0000000
+##      0    1    2    3    4    5    6
+## 0 0.97 0.98 1.02 1.26 0.88 1.74 0.00
+## 1 1.00 1.05 0.91 1.14 0.91 0.76 0.76
+## 2 0.95 1.03 1.09 0.76 1.06 0.63 1.89
+## 3 1.13 0.86 1.01 0.97 0.90 1.61 2.42
+## 4 1.15 0.95 0.90 0.29 2.40 0.00 0.00
+## 5 1.20 0.83 1.25 0.00 1.31 0.00 0.00
+## 6 1.26 1.21 0.00 2.41 0.00 0.00 0.00
+## 7 0.00 2.81 0.00 0.00 0.00 0.00 0.00
+## 8 0.00 0.00 4.83 0.00 0.00 0.00 0.00
 ```
 
 Para determinar si el número de goles del equipo local o el de el equipo
@@ -697,21 +614,9 @@ Transformamos el data frame a columna para facilitar el bootstrap.
 
 
 ```r
-aux = matrix(, nrow=9*7, 1)
-indice = 1
-for(i in 1:7){
-  for(k in 1:9){
-    aux[indice,1] = cociente[k,i]
-    indice= indice + 1
-  }
-}
-```
+data_origin <- as.data.frame(as.vector(unlist(cociente)))
 
-Este es nuestro dataframe, con la información de los cocientes.
-
-
-```r
-dataframe = as.data.frame(aux)
+colnames(data_origin) <- "values"
 ```
 
 Utilizamos la biblioteca `"rsample"` para poder hacer las muestras
@@ -734,118 +639,208 @@ guardándolas en boot:
 
 
 ```r
-boot <- bootstraps(dataframe, times = 1000)
+boot <- bootstraps(data_origin, times = 1000)
 ```
 
-Confirmamos la dimensión de nuestras muestras:
+Cargamos las siguientes bibliotecas:
 
 
 ```r
-dim(as.data.frame(boot$splits[[5]]))
+library(purrr)
+library(modeldata)
+library(viridis)
+library(tidyverse)
+library(hrbrthemes)
+library(forcats)
 ```
 
-```
-## [1] 63  1
-```
+Realizamos una función para hacer una columna de las medias muestrales
+obtenidas por bootstrap y aplicamos la función:
 
-Guardamos nuestro dataframe para poder añadir las muestras para
-facilitar su análisis:
+
 
 
 ```r
-data_f = dataframe
+boot$means <- map_dbl(boot$splits, obtener_media)
+length(boot$means); summary(boot$means)
 ```
 
-Juntamos las columnas de nuestras muestras, para poder aplicar `apply`
-directo:
+```
+## [1] 1000
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.4996  0.7523  0.8256  0.8288  0.9048  1.1796
+```
+
+Observamos el valor de la media de las medias muestrales.
+
+Realizamos una función para un histograma:
+
+
+
+Comprobamos la hipótesis de que la media se encuentra en 1 con las
+medidas muestrales bootstrap y obtenemos el intervalo de confianza de
+95% con una prueba t:
 
 
 ```r
-for(i in 1:length(boot$splits)){
-  data_f = cbind(data_f, as.data.frame(boot$splits[[i]]))
-}
+t_boot <- t.test(boot$means, alternative = "two.sided", mu = 1)
+t_boot_ic <- round(t_boot$conf.int,3)
+t_boot_ic
 ```
 
-Calculamos la media por cociente (por renglón):
+```
+## [1] 0.822 0.835
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+Realizamos el histograma de las muestras obtenidas por bootstrap.
+
+
+
+
+
+
+
+## Figura 4.1 Histograma bootstrap
 
 
 ```r
-mean_conj = apply(data_f, 1, mean)
+ggplotly(hist_boot)
 ```
 
-De forma analoga calculamos la varianza (por renglón)
+<img src="https://github.com/itzamango/postwork-equipo-10/blob/7d498adad44bc306fff4238f65491e09f4578516/img/4.png?raw=true">
+
+
+> La línea sólida indica la posición de la media y las punteadas, la
+> posición de los límites del intervalo de confianza.
+
+De igual modo lo hacemos para la muestra original:
 
 
 ```r
-var_conj = apply(data_f, 1, var)
+t_origin <- t.test(data_origin$values, alternative = "two.sided", mu = 1)
+t_origin_ic <- round(t_origin$conf.int, 3)
+t_origin_ic
 ```
 
-Juntamos en un solo dataframe las columnas, media, varianza para su
-análisis:
+```
+## [1] 0.613 1.053
+## attr(,"conf.level")
+## [1] 0.95
+```
+
+
+
+## Figura 4.2 Histograma original
 
 
 ```r
-analisis <- cbind(dataframe, mean_conj, var_conj)
+ggplotly(hist_origin)
 ```
 
-Utilizamos el teorema de límite central, para poder calcular la
-probabilidad de la distribución normal, ya que nuestra muestra contiene
-1000 datos
+
+<img src="https://github.com/itzamango/postwork-equipo-10/blob/7d498adad44bc306fff4238f65491e09f4578516/img/5.png?raw=true">
+
+
+> La línea sólida indica la posición de la media y las punteadas, la
+> posición de los límites del intervalo de confianza.
+
+Vemos los datos de los estadísticos de las pruebas t para ambos conjuntos de datos.
+
+Remuestreo bootstrap:
+
 
 
 ```r
-analisis <- mutate(analisis, 
-                   probabilidad = pnorm(q = V1, mean = mean_conj, 
-                                        sd = sqrt(var_conj/1000)))
+t_boot
 ```
 
-Hacemos los cambios en los nombres, y añadimos el número de goles para
-su presentación:
+```
+## 
+## 	One Sample t-test
+## 
+## data:  boot$means
+## t = -50.464, df = 999, p-value < 2.2e-16
+## alternative hypothesis: true mean is not equal to 1
+## 95 percent confidence interval:
+##  0.8221057 0.8354231
+## sample estimates:
+## mean of x 
+## 0.8287644
+```
+
+Muestras originales:
 
 
 ```r
-analisis <- cbind(c(rep(0,9), rep(1,9), rep(2,9), 
-                    rep(3,9), rep(4,9), rep(5,9), 
-                    rep(6,9)),analisis)
-analisis <- cbind(rep(seq(0,8,1),7),analisis)
-colnames(analisis) = c("goles local", "goles visitante",
-                       "Cociente", "Media", "Varianza", 
-                       "Probabilidad")
-```
-
-Utilizamos la biblioteca `"dplyr"` para el análisis:
-
-
-```r
-library(dplyr)
-```
-
-Filtramos los valores en donde el cociente es proporcional a 1. Ya que
-esto significa que la probabilidad grupal es igual a la probabilidad
-independiente.
-
-
-```r
-(dependiente <- filter(analisis, Cociente >= 0.97 & Cociente <= 1.04))
+t_origin
 ```
 
 ```
-##      goles local goles visitante  Cociente     Media  Varianza Probabilidad
-## 49             1               0 0.9955769 0.7929626 0.6455403            1
-## 7              0               1 0.9770432 0.8250909 0.7949466            1
-## 2              2               1 1.0292980 0.8397165 0.7896762            1
-## 48.1           0               2 1.0235690 0.8290051 0.7101425            1
-## 2.1            3               2 1.0142554 0.7911646 0.7151448            1
+## 
+## 	One Sample t-test
+## 
+## data:  data_origin$values
+## t = -1.5194, df = 62, p-value = 0.1338
+## alternative hypothesis: true mean is not equal to 1
+## 95 percent confidence interval:
+##  0.6130959 1.0527411
+## sample estimates:
+## mean of x 
+## 0.8329185
 ```
 
-### Conclusiones
+## Conclusiones
 
-Podemos apreciar que la probabilidad no es en todos los casos de 1.  Para la independencia de variables es necesario que todos los cocientes sean uno, pero tomando en cuenta que es en teoría ese argumento; por la cercania de los valores podríamos considerarlas como independientes, pero tomando en cuenta la media, acorde al Teorema del Limite Central, vimos que el valor es alejado de 1 mediante el procedimiento bootstrap, del cual encontraremos las medias muestrales del 'resampling' de 1000 muestras.
+En la teoría para que haya independencia de variables es necesario que
+todos los cocientes de las probabilidades resulten en uno. En la
+práctica a simple vista por la cercanía entre los valores se podría
+considerar como independientes.
 
-Por lo que la hipótesis de que las variables sean independientes es descartada al no estar la media de las medias muestrales (la media poblacional) en el rango de 1 ± el intervalo de confianza utilizando el promedio de las medias muestrales generadas por bootstrap.
+Es mejor realizar un método de remuestreo para estimar la media
+poblacional acorde al Teorema del Limite Central. Usamos el método de
+bootstrap, con el cual obtuvimos las medias muestrales del 'resampling'
+de 1000 muestras a partir de la original.
 
-Este resultado tiene sentido, al saber que el evento de que un equipo meta gol depende de su interacción con el otro equipo. Por ejemplo, que un jugador lesione intencionalmente al jugador de otro equipo, incluso se puede considerar si el equipo entra en estrés al ver que falta poco tiempo y no superan el marcador.
+Apreciamos que en el rango del intervalo de confianza de 95% de las
+medias bootstrap no se encuentra el 1, el valor p es mucho menor a 0.025
+y la media estimada no está en 1.
 
-En el área de ciencia de datos será una parte importante identificar las variables dependientes, puesto que a partir de la relación entre ellas se encontrarán patrones y tendencias. Identificarlas para hacer una propuesta a partir de ello va a dar valor a los datos. 
+A partir de ello podemos decir que la hipótesis de que sean las
+variables independentes no se cumple. Por tanto, las variables de goles
+anotados por el equipo local y el equipo visitante en un partido son
+variables dependientes.
 
-Por ejemplo, la tendencia de compras de ciertos muebles; saber en cuál temporada se venden más hará que una tienda gaste menos en almanecamiento en bodega por ellos y pueda ocupar esos recursos en otras áreas. O encontrar que un producto piloto es preferido por una población de cierto grupo etario u otras características para enfocar los recursos en diseñar una campaña de marketing dirigido especialmente a ellos.
+Este resultado tiene sentido, al saber que el evento de que un equipo
+meta gol depende de su interacción con el otro equipo. Por ejemplo, que
+un jugador lesione intencionalmente al jugador de otro equipo, incluso
+se puede considerar si el equipo entra en estrés al ver que falta poco
+tiempo y no superan el marcador.
+
+En el área de análisis de datos será una parte importante identificar
+las variables dependientes, puesto que a partir de la relación entre
+ellas se encontrarán patrones y tendencias. Identificarlas para hacer
+una propuesta a partir de ello va a dar valor a los datos.
+
+Por ejemplo, la tendencia de compras de ciertos muebles; saber en cuál
+temporada se venden más hará que una tienda gaste menos en
+almanecamiento en bodega por ellos y pueda ocupar esos recursos en otras
+áreas. O encontrar que un producto piloto es preferido por una población
+de cierto grupo etario u otras características para enfocar los recursos
+en diseñar una campaña de marketing dirigido especialmente a ellos.
+
+Y para ello, es necesario utilizar un método para estimar los
+estádisticos de la población. Hay una diferencia notoria entre los
+estádisticos de la muestra original y los del remuestreo. Aunque la
+media de ambos no difiere mucho, el rango del intervalo de confianza sí.
+
+Con los datos originales, el intervalo de confianza cubre al 1 con la
+probabilidad de que la media poblacional se encuentre ahí de 13%
+mientras que con los estadísticos de las muestras bootstrap la
+probabilidad que la media poblacional sea 1 es super baja y podemos
+considerar que las variables son dependientes.
+
