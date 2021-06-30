@@ -810,9 +810,10 @@ Apreciamos que en el rango del intervalo de confianza de 95% de las
 medias bootstrap no se encuentra el 1, el valor p es mucho menor a 0.025
 y la media estimada no está en 1.
 
-A partir de ello podemos decir que la hipótesis de que sean las
-variables independentes no se cumple. Por tanto, las variables de goles
-anotados por el equipo local y el equipo visitante en un partido son
+A partir de ello podemos decir que la hipótesis nula de que sean las
+variables son independentes al ser la media 1 de ambas muestras es rechazada. 
+Por tanto, aceptamos las variables de goles
+anotados por el equipo local y el equipo visitante en un partido como
 variables dependientes.
 
 Este resultado tiene sentido, al saber que el evento de que un equipo
@@ -828,7 +829,7 @@ una propuesta a partir de ello va a dar valor a los datos.
 
 Por ejemplo, la tendencia de compras de ciertos muebles; saber en cuál
 temporada se venden más hará que una tienda gaste menos en
-almanecamiento en bodega por ellos y pueda ocupar esos recursos en otras
+almacenamiento en bodega por ellos y pueda ocupar esos recursos en otras
 áreas. O encontrar que un producto piloto es preferido por una población
 de cierto grupo etario u otras características para enfocar los recursos
 en diseñar una campaña de marketing dirigido especialmente a ellos.
@@ -838,9 +839,8 @@ estádisticos de la población. Hay una diferencia notoria entre los
 estádisticos de la muestra original y los del remuestreo. Aunque la
 media de ambos no difiere mucho, el rango del intervalo de confianza sí.
 
-Con los datos originales, el intervalo de confianza cubre al 1 con la
-probabilidad de que la media poblacional se encuentre ahí de 13%
+Con los datos originales, el intervalo de confianza cubre al 1 
 mientras que con los estadísticos de las muestras bootstrap la
 probabilidad que la media poblacional sea 1 es super baja y podemos
-considerar que las variables son dependientes.
+aceptar las variables como dependientes.
 
