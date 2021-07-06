@@ -287,3 +287,30 @@ library(dplyr)
 # todas las muestras, por lo que podemos tomar como inconcluso e insuficiente
 # el análisis estadístico
 
+#POSTWORK 5---------------------------------------------------------------------
+
+#POSTWORK 6---------------------------------------------------------------------
+library(dplyr)
+
+#Importaremos el conjunto de datos match.data.csv 
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-06/Postwork/match.data.csv")
+
+head(df)
+summary(df)
+
+#Agregamos una nueva columna que contenga la suma de goles por partido y obtenemos su promedio por mes
+df["sumagoles"] <- df$home.score+df$away.score
+
+class(df$date) #Revisamos el tipo de dato de la fecha
+df$date <- as.Date(df$date) #Convertimos a fecha
+class(df$date) 
+
+df$fecha <- format(df$date, format = "%Y-%m")
+golesxmes <- aggregate( df$sumagoles ~ df$fecha, df , mean) #Realizamos promedio
+View(golesxmes)
+
+#Creamos la serie de tiempo del promedio por mes de la suma de goles hasta diciembre de 2019
+golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 12)
+golesxmes.ts
+
+plot(golesxmes.ts) #Grafica de la serie de tiempo
