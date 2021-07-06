@@ -60,3 +60,9 @@ comparacion = cbind(originales, resultados)
 
 subset(comparacion, select=c("date","home.team", "home.score", 
                                             "predic.home.score", "away.team", "away.score", "predic.away.score"))
+
+
+# Como vimos si tenemos los datos sufiicientes de algun evento en este caso los resultados de partidos
+# de la liga española, podemos hacer una prediccion de los resultados de alguna fecha o partido.
+# Con ayuda de la biblioteca fbtanks vimos lo sencillo que puede ser utlizar R como herramienta para predecir
+# los resultados de un partido.
