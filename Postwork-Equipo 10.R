@@ -219,27 +219,22 @@ cociente #df final del cociente
 #y analizar la distribución
 
 #' Transformamos el data frame a columna para facilitar el bootstrap.
-
 data_origin <- as.data.frame(as.vector(unlist(cociente)))
 
 colnames(data_origin) <- "values"
 
 #' Utilizamos la biblioteca `"rsample"` para poder hacer las muestras
 #' bootstrap:
-
 library(rsample)
 
 #' Fijamos la semilla para poder reproducir los datos:
-
 set.seed(83928782)
 
 #' Aplicamos la función bootstraps, para generar 1000 muestras,
 #' guardándolas en boot:
-
 boot <- bootstraps(data_origin, times = 1000)
 
 #' Cargamos las siguientes bibliotecas:
-
 library(purrr)
 library(modeldata)
 library(viridis)
@@ -250,7 +245,6 @@ library(viridisLite)
 
 #' Realizamos una función para hacer una columna de las medias muestrales
 #' obtenidas por bootstrap y aplicamos la función:
-
 obtener_media <- function(boot_splits) {
   data_mean <- analysis(boot_splits)
   medias_muestrales <- mean(data_mean[,1])
@@ -262,7 +256,6 @@ length(boot$means); summary(boot$means)
 
 #' Observamos el valor de la media de las medias muestrales.
 #' Realizamos una función para un histograma:
-
 histograma <- function(data
                        ,data_medias
                        ,ic_2
@@ -295,7 +288,6 @@ histograma <- function(data
 #' Comprobamos la hipótesis de que la media se encuentra en 1 con las
 #' medidas muestrales bootstrap y obtenemos el intervalo de confianza de
 #' 95% con una prueba t:
-
 t_boot <- t.test(boot$means, alternative = "two.sided", mu = 1)
 t_boot_ic <- round(t_boot$conf.int,3)
 t_boot_ic
@@ -331,7 +323,6 @@ histograma <- function(data
   return(histograma)
 }
 
-
 ic_mean_ic <- c(t_boot_ic[1], 
                 mean(boot$means), 
                 t_boot_ic[2])
@@ -339,17 +330,14 @@ ic_mean_ic <- c(t_boot_ic[1],
 hist_boot <- histograma(boot, boot$means, t_boot_ic, 10, "Histograma de las medias muestrales bootstrap", "Valor de la Media","Frecuencia", "Frec")
 
 #' ## Figura 4.1 Histograma bootstrap
-
 ggplotly(hist_boot)
 
 #' > La línea sólida indica la posición de la media y las punteadas, la
 #' > posición de los límites del intervalo de confianza.
 #' De igual modo lo hacemos para la muestra original:
-
 t_origin <- t.test(data_origin$values, alternative = "two.sided", mu = 1)
 t_origin_ic <- round(t_origin$conf.int, 3)
 t_origin_ic
-
 
 ori_ic_mean_ic <- c(t_origin_ic[1], 
                     mean(data_origin$values), 
@@ -358,18 +346,15 @@ ori_ic_mean_ic <- c(t_origin_ic[1],
 hist_origin <-  histograma(data_origin, data_origin$values, t_origin_ic, 11, "Histograma de la muestra original", "Valor de la Muestra","Frecuencia", "Frec")
 
 #' ## Figura 4.2 Histograma original
-
 ggplotly(hist_origin)
 
 #' > La línea sólida indica la posición de la media y las punteadas, la
 #' > posición de los límites del intervalo de confianza.
 #' Vemos los datos de los estadísticos de las pruebas t para ambos conjuntos de datos.
 #' Remuestreo bootstrap:
-
 t_boot
 
 #' Muestras originales:
-
 t_origin
 
 #POSTWORK 5---------------------------------------------------------------------
