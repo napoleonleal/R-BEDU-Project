@@ -218,74 +218,159 @@ cociente #df final del cociente
 #procedimiento de bootstrap para obtener más cocientes similares
 #y analizar la distribución
 
-#Transformamos el data frame a columna para facilitar el bootstrap
-aux = matrix(, nrow=9*7, 1)
-indice = 1
-for(i in 1:7){
-  for(k in 1:9){
-    aux[indice,1] = cociente[k,i]
-    indice= indice + 1
-  }
-}
+#' Transformamos el data frame a columna para facilitar el bootstrap.
 
-#Este es nuestro dataframe, con la informacion de los cocientes
-dataframe = as.data.frame(aux)
+data_origin <- as.data.frame(as.vector(unlist(cociente)))
 
-# Utilizamos la libreria "rsample" para poder hacer las muestras bootstrap
+colnames(data_origin) <- "values"
+
+#' Utilizamos la biblioteca `"rsample"` para poder hacer las muestras
+#' bootstrap:
+
 library(rsample)
 
-# Fijamos la semilla para poder reproducir los datos
+#' Fijamos la semilla para poder reproducir los datos:
+
 set.seed(83928782)
 
-# Aplicamos la funcion bootstraps, para generar 1000 muestras, guardandolas en boot
-boot <- bootstraps(dataframe, times = 1000)
+#' Aplicamos la función bootstraps, para generar 1000 muestras,
+#' guardándolas en boot:
 
-# Confirmamos la dimensión de nuestras muestras
-dim(as.data.frame(boot$splits[[5]]))
+boot <- bootstraps(data_origin, times = 1000)
 
-# Guardamos nuestro dataframe para poder añadir las muestras para facilitar su
-#analisis
-data_f = dataframe
+#' Cargamos las siguientes bibliotecas:
 
-# Juntamos las columnas de nuestras muestras, para poder aplicar apply directo
-for(i in 1:length(boot$splits)){
-  data_f = cbind(data_f, as.data.frame(boot$splits[[i]]))
+library(purrr)
+library(modeldata)
+library(viridis)
+library(tidyverse)
+library(hrbrthemes)
+library(forcats)
+library(viridisLite)
+
+#' Realizamos una función para hacer una columna de las medias muestrales
+#' obtenidas por bootstrap y aplicamos la función:
+
+obtener_media <- function(boot_splits) {
+  data_mean <- analysis(boot_splits)
+  medias_muestrales <- mean(data_mean[,1])
+  return(medias_muestrales)
 }
 
-# Calculamos la media por cociente (por renglón)
-mean_conj = apply(data_f, 1, mean)
+boot$means <- map_dbl(boot$splits, obtener_media)
+length(boot$means); summary(boot$means)
 
-# De forma analoga calculamos la varianza (por renglón)
-var_conj = apply(data_f, 1, var)
+#' Observamos el valor de la media de las medias muestrales.
+#' Realizamos una función para un histograma:
 
-# Juntamos en un solo dataframe las columnas, media, varianza para su análisis
-analisis <- cbind(dataframe, mean_conj, var_conj)
+histograma <- function(data
+                       ,data_medias
+                       ,ic_2
+                       ,n_bins
+                       ,titulo
+                       ,x_label
+                       ,y_label
+                       ,fill_label){
+  histograma <- ggplot(data, 
+                       aes(data_medias)) + 
+    geom_histogram(bins = n_bins, 
+                   color=NA, 
+                   aes(fill=..count..)) + 
+    geom_vline(aes(xintercept = mean(data_medias))) +
+    geom_vline(xintercept = c(ic_2), ####
+               linetype = c(2,2)) +
+    ggtitle(titulo) + 
+    ylab(y_label) +
+    xlab(x_label) +
+    scale_fill_viridis(name = fill_label) +
+    theme_ipsum() +
+    theme(
+      #legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 10)
+    )
+  return(histograma)
+}
 
-# Utilizamos el teorema de límite central, para poder calcular la probabilidad
-# de la distribución normal, ya que nuestra muestra
-# contiene 1000 datos
-analisis <- mutate(analisis, probabilidad = pnorm(q = V1, mean = mean_conj, sd = sqrt(var_conj/1000)))
+#' Comprobamos la hipótesis de que la media se encuentra en 1 con las
+#' medidas muestrales bootstrap y obtenemos el intervalo de confianza de
+#' 95% con una prueba t:
 
-# Hacemos los cambios en los nombres, y añadimos el numero de goles para su presentación
-analisis <- cbind(c(rep(0,9), rep(1,9), rep(2,9), rep(3,9), rep(4,9), rep(5,9), rep(6,9)),analisis)
-analisis <- cbind(rep(seq(0,8,1),7),analisis)
-(colnames(analisis) = c("goles local", "goles visitante","Cociente", "Media", "Varianza", "Probabilidad"))
+t_boot <- t.test(boot$means, alternative = "two.sided", mu = 1)
+t_boot_ic <- round(t_boot$conf.int,3)
+t_boot_ic
 
-# Utilizamos la librería dplyr para el análisis
-library(dplyr)
+#' Realizamos el histograma de las muestras obtenidas por bootstrap.
 
-# Filtramos los valores en donde el cociente es proporcional a 1
-# Ya que esto significa que la probabilidad grupal es igual a la probabilidad
-# independiente
-(dependiente <- filter(analisis, Cociente >= 0.97 & Cociente <= 1.04))
+histograma <- function(data
+                       ,data_medias
+                       ,ic_2
+                       ,n_bins
+                       ,titulo
+                       ,x_label
+                       ,y_label
+                       ,fill_label){
+  histograma <- ggplot(data, 
+                       aes(data_medias)) + 
+    geom_histogram(bins = n_bins, 
+                   color=NA, 
+                   aes(fill=..count..)) + 
+    geom_vline(aes(xintercept = mean(data_medias))) +
+    geom_vline(xintercept = c(ic_2), ####
+               linetype = c(2,2)) +
+    ggtitle(titulo) + 
+    ylab(y_label) +
+    xlab(x_label) +
+    scale_fill_viridis(name = fill_label) +
+    theme_ipsum() +
+    theme(
+      #legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 10)
+    )
+  return(histograma)
+}
 
-# Podemos apreciar que la probabilidad en todos los casos es de 1, por lo que
-# en un primer vistazo, podríamos aceptarlos como independientes, pero
-# tomando en cuenta la media, vemos que el valor es alejado de 1
-# esto debido al procedimiento bootstrap, por el cual encontraremos
-# medias similares en todos los datos, ya que los posiciona aleatoriamente en 
-# todas las muestras, por lo que podemos tomar como inconcluso e insuficiente
-# el análisis estadístico
+
+ic_mean_ic <- c(t_boot_ic[1], 
+                mean(boot$means), 
+                t_boot_ic[2])
+
+hist_boot <- histograma(boot, boot$means, t_boot_ic, 10, "Histograma de las medias muestrales bootstrap", "Valor de la Media","Frecuencia", "Frec")
+
+#' ## Figura 4.1 Histograma bootstrap
+
+ggplotly(hist_boot)
+
+#' > La línea sólida indica la posición de la media y las punteadas, la
+#' > posición de los límites del intervalo de confianza.
+#' De igual modo lo hacemos para la muestra original:
+
+t_origin <- t.test(data_origin$values, alternative = "two.sided", mu = 1)
+t_origin_ic <- round(t_origin$conf.int, 3)
+t_origin_ic
+
+
+ori_ic_mean_ic <- c(t_origin_ic[1], 
+                    mean(data_origin$values), 
+                    t_origin_ic[2])
+
+hist_origin <-  histograma(data_origin, data_origin$values, t_origin_ic, 11, "Histograma de la muestra original", "Valor de la Muestra","Frecuencia", "Frec")
+
+#' ## Figura 4.2 Histograma original
+
+ggplotly(hist_origin)
+
+#' > La línea sólida indica la posición de la media y las punteadas, la
+#' > posición de los límites del intervalo de confianza.
+#' Vemos los datos de los estadísticos de las pruebas t para ambos conjuntos de datos.
+#' Remuestreo bootstrap:
+
+t_boot
+
+#' Muestras originales:
+
+t_origin
 
 #POSTWORK 5---------------------------------------------------------------------
 
