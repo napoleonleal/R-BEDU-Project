@@ -1,7 +1,7 @@
 library(mongolite)
 library(dplyr)
 
-
+# Obtenemos el csv
 match.db <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-07/Postwork/match.data.csv")
 
 # Conectamos con la base de datos match_games y la colección match
@@ -9,7 +9,7 @@ connection <- mongo(collection = "match"
                     , db ="match_games"
                     , url = "mongodb+srv://equipo10:bedu@postwork7.8voq3.mongodb.net/test")
 
-
+# Verificamos que si no hay documentos los agregue del csv
 if (connection$count() == 0) {
   connection$insert(match.db)
 }
@@ -25,7 +25,8 @@ query = c('{ "$or": [
 # Realizamos la consulta y find convierte el resultado de la coleccion a dataframe
 q.result <- connection$find(query)
 
-# Vemos que el Real Madrid solo jugó como home; solo contamos los goles y vemos el equipo contrincante
+# Notamos que el Real Madrid solo jugó como solo como home; 
+# contamos los goles y vemos quien fue el equipo contrincante
 n.goles  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(home_score) %>% sum()
 vs.team  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(away_team)
 
