@@ -35,7 +35,7 @@ print(paste(  c('Cantidad de goles metidos el 20-12-2015 por el Real Madrid:'), 
 
 print("¡¡Fue una golealda!!")
 
-# Desconectamos la conexion
+# Desconectamos la conexión
 connection$disconnect()
 
 
