@@ -22,10 +22,10 @@ query = c('{ "$or": [
              "date": "2015-12-20"
         }')
 
-# Realizamos la consulta y find convierte el resultado de la coleccion a dataframe
+# Realizamos la consulta y find convierte el resultado de la colección a dataframe
 q.result <- connection$find(query)
 
-# Notamos que el Real Madrid solo jugó como solo como home; 
+# Notamos que el Real Madrid solo jugó como home; 
 # contamos los goles y vemos quien fue el equipo contrincante
 n.goles  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(home_score) %>% sum()
 vs.team  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(away_team)
@@ -34,7 +34,7 @@ vs.team  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(away_team)
 print(paste(  c('Cantidad de goles metidos el 20-12-2015 por el Real Madrid:'), n.goles
              ,c('contra el equipo:'), vs.team))
 
-print("¡¡Fue una golealda!!")
+print("¡¡Fue una goleada!!")
 
 # Desconectamos la conexión
 connection$disconnect()
