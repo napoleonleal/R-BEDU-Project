@@ -1,0 +1,27 @@
+   team,        total, attack, defense, n.games.Var1, n.games.Freq
+1,  Barcelona,    1.51, 2.23,   1.28,    Barcelona,    113         
+2,  Ath Madrid,   1.24, 1.33,   1.78,    Ath Madrid,   113         
+3,  Real Madrid,  1.15, 1.86,   1.19,    Real Madrid,  113         
+4,  Valencia,     0.56, 1.34,   1.10,    Valencia,     113         
+5,  Getafe,       0.55, 1.10,   1.33,    Getafe,       113         
+6,  Sevilla,      0.43, 1.37,   0.98,    Sevilla,      113         
+7,  Granada,      0.37, 1.26,   1.03,    Granada,       37         
+8,  Villarreal,   0.33, 1.38,   0.91,    Villarreal,   113         
+9,  Sociedad,     0.32, 1.39,   0.90,    Sociedad,     113         
+10, Ath Bilbao,   0.15, 1.02,   1.09,    Ath Bilbao,   113         
+11, Osasuna,      0.07, 1.18,   0.89,    Osasuna,       37         
+12, Betis,        0.05, 1.28,   0.81,    Betis,        113         
+13, Celta,        0.02, 1.26,   0.81,    Celta,        113         
+14, Eibar,       -0.02, 1.08,   0.91,    Eibar,        113         
+15, Levante,     -0.03, 1.26,   0.78,    Levante,      113         
+16, Girona,      -0.18, 1.07,   0.83,    Girona,        76         
+17, Espanol,     -0.21, 0.93,   0.93,    Espanol,      113         
+18, Alaves,      -0.23, 0.95,   0.90,    Alaves,       113         
+19, Leganes,     -0.31, 0.82,   0.98,    Leganes,      113         
+20, Valladolid,  -0.33, 0.79,   1.00,    Valladolid,    75         
+21, Huesca,      -0.35, 1.09,   0.72,    Huesca,        38         
+22, Mallorca,    -0.41, 1.02,   0.74,    Mallorca,      37         
+23, Vallecano,   -0.51, 1.04,  0.67,    Vallecano,     38         
+24, La Coruna,   -0.82, 0.94,   0.60,    La Coruna,     38         
+25, Malaga,      -1.17, 0.58,   0.76,    Malaga,        38         
+26, Las Palmas,  -1.43, 0.59,   0.63,    Las Palmas,    38         
