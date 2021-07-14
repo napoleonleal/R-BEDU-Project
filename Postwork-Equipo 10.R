@@ -119,8 +119,8 @@ e.local <- ggplot(goles.local, aes(x = Goles, y = Prob.Marginal)) + geom_bar(sta
   theme_light() +
   theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
   theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
-  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
-  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(axis.title.x = element_text(size = 18)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 18)) + #tamaño del letrero en y
   theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
 
 #######Opcional, creación de animación del grafico, necesitamos la libreria "gganimate"
@@ -130,7 +130,7 @@ library(gganimate)
   enter_grow() +
   shadow_mark())
 #Lo generamos como video, para eso es necesario tener ffmpeg instalado
-animate(e.local.animation, duration = 4, renderer = ffmpeg_renderer())
+animate(e.local.animation, duration = 2.7, renderer = ffmpeg_renderer())
 ########
 
 ggplotly(e.local) #versión interactiva
@@ -150,8 +150,8 @@ e.visitante <- ggplot(goles.visitante, aes(x = Goles, y = pm.vis)) + geom_bar(st
   theme_light() +
   theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
   theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
-  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
-  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(axis.title.x = element_text(size = 18)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 18)) + #tamaño del letrero en y
   theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
 
 #####Opcional, creación de animación del grafico
@@ -161,7 +161,7 @@ library(gganimate)
     enter_grow() +
     shadow_mark())
 #Lo generamos como video, para eso es necesario tener ffmpeg instalado
-animate(e.visitante.animation, duration = 4, renderer = ffmpeg_renderer())
+animate(e.visitante.animation, duration = 2.7, renderer = ffmpeg_renderer())
 #####
 
 ggplotly(e.visitante) #versión interactiva
@@ -186,9 +186,19 @@ p <- ggplot(heat.df, aes(Local, Visitante, fill= Probabilidad)) + #gráficamos
   ggtitle("Probabilidad conjunta\n de anotación")  +
   theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
   theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
-  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
-  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(axis.title.x = element_text(size = 18)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 18)) + #tamaño del letrero en y
   theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
+
+#####Opcional, creación de animación del grafico
+library(gganimate)
+
+(p.animation <- p + transition_states(Probabilidad, transition_length = 20) +
+    enter_grow() +
+    shadow_mark())
+#Lo generamos como video, para eso es necesario tener ffmpeg instalado
+animate(p.animation, duration = 7, renderer = ffmpeg_renderer())
+#####
 
 p
 
