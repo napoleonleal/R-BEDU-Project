@@ -397,7 +397,7 @@ library(dplyr)
 library(fbRanks)
 
 #Guardamos los datos de las 3 temporadas en una lista
-lista <- lapply(dir(), read.csv)
+lista <- lapply(dir(pattern="liga"), read.csv)
 
 #Seleccionamos unicamente los elementos "Date", "HomeTeam", "FTHG", "AwayTeam" ,"FTAG",
 #los cuales son esenciales para el modelo
