@@ -183,7 +183,12 @@ heat.df
 p <- ggplot(heat.df, aes(Local, Visitante, fill= Probabilidad)) + #gráficamos
   geom_raster() +
   scale_fill_viridis_c() +
-  ggtitle("Probabilidad conjunta de anotación") 
+  ggtitle("Probabilidad conjunta\n de anotación")  +
+  theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
+  theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
+  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
 
 p
 
