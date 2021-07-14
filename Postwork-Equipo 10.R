@@ -357,7 +357,6 @@ t_boot
 #' Muestras originales:
 t_origin
 
-
 #POSTWORK 5---------------------------------------------------------------------
 #Con los datos de la liga de primera división española, de las temporadas 2017/2018, 2018/2019 y 2019/2020
 # haremos una predicción de los resultados de los partidos de la fecha 07/16/2020
@@ -395,7 +394,6 @@ listasoccer <- create.fbRanks.dataframes(scores.file = 'soccer.csv', date.format
 #teams.resolver y por último el data.frame raw.scores, con algunas configuraciones para el
 #uso de otras funciones.
 View(listasoccer)
-
 
 #Guardamos el data.frame scores generados, con las puntuaciones en las temporadas
 anotaciones = listasoccer$scores
@@ -435,7 +433,6 @@ Ranking.datos <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU
 #Como también el resumen
 summary(Ranking.datos)
 
-
 #Para las predicciones referentes a los últimos partidos de la liga, utilizaremos la función
 #"predict", que se basa en el modelo de Dixon and Coles, el cual es una modificación del modelo
 #de predicciones de distribuciones de Poisson, con una modificación en cuanto a la sobre-estimación
@@ -443,7 +440,6 @@ summary(Ranking.datos)
 #La función requiere un objeto clase "fbRank", ya que hace uso de los coeficientes de la regresión
 #lineal
 prediccion = predict.fbRanks(ranking, date = fecha[n])
-
 
 #La función regresa una lista, con data.frames y vectores, nos enfocaremos principalmente
 #en su primer objeto "scores", a diferencia de nuestro csv, solo contiene los datos sobre
@@ -464,7 +460,6 @@ colnames(probabilidades.predicciones) = c("Home.team", "Away.team", "Prob.win",
     "Pred.hometeam.score" = round(Pred.hometeam.score,0),
     "Pred.awayteam.score" = round(Pred.awayteam.score,0)))
 
-
 #Hacemos una comparación con los datos reales
 comparacion <- select(var.prediccion, "scores.home.team", "scores.home.score",
     "scores.pred.home.score", "scores.away.team", "scores.away.score",
@@ -484,9 +479,6 @@ comparacion <- select(var.prediccion, "scores.home.team", "scores.home.score",
 #partidos acertó totalmente en 1 partido, por lo que estos análisis pueden servir como
 #referencia, pero la predicción de resultados de juegos puede ser muy compleja, por el
 #número de factores involucrados
-
-
-
 
 #POSTWORK 6---------------------------------------------------------------------
 library(dplyr)
@@ -509,12 +501,15 @@ golesxmes <- aggregate( df$sumagoles ~ df$fecha, df , mean) #Realizamos promedio
 View(golesxmes)
 
 #Creamos la serie de tiempo del promedio por mes de la suma de goles hasta diciembre de 2019
-golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 12)
+golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 10)
 golesxmes.ts
 
 plot(golesxmes.ts) #Grafica de la serie de tiempo
 
-
+#Notemos que la frecuencia es 10 y no 12, ya que aunque la serie de tiempo se 
+#realiza tomando en cuenta los meses, las temporadas se juegan de agosto a mayo, 
+#por lo tanto como no se realizan juegos durante los meses de junio y julio
+#sólo se toman en cuenta los 10 meses donde se generan los goles
 
 #POSTWORK 7---------------------------------------------------------------------
 library(mongolite)
