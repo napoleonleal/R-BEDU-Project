@@ -1,4 +1,4 @@
-#Postwprk 6  # HECHO POR ADRIAN
+#Postwork 6 
 
 #Importa el conjunto de datos match.data.csv a R y realiza lo siguiente:
 setwd("C:/Users/adria/OneDrive/Bedu - Data Science/Programación y estadística en R/postwork")
