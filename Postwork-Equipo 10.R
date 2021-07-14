@@ -114,9 +114,24 @@ goles.local #probabilidad final
 
 #Realizamos una gráfica para vizualizar los datos
 e.local <- ggplot(goles.local, aes(x = Goles, y = Prob.Marginal)) + geom_bar(stat="identity", colour='black', fill='#99CCFF') +
-  ggtitle('Probabilidad de que el equipo local anote goles') +
+  ggtitle('Probabilidad de que el equipo\n local anote goles') +
   ylab('Probabilidad de ocurrencia') +
-  theme_light()
+  theme_light() +
+  theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
+  theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
+  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
+
+#######Opcional, creación de animación del grafico, necesitamos la libreria "gganimate"
+library(gganimate)
+
+(e.local.animation <- e.local + transition_states(Goles, transition_length = 10) +
+  enter_grow() +
+  shadow_mark())
+#Lo generamos como video, para eso es necesario tener ffmpeg instalado
+animate(e.local.animation, duration = 4, renderer = ffmpeg_renderer())
+########
 
 ggplotly(e.local) #versión interactiva
 
@@ -130,9 +145,24 @@ goles.visitante #probabilidad final
 
 #Realizamos una gráfica para vizualizar los datos
 e.visitante <- ggplot(goles.visitante, aes(x = Goles, y = pm.vis)) + geom_bar(stat="identity", colour='black', fill='#FFCC99') +
-  ggtitle('Probabilidad de que el equipo visitante anote goles') +
-  ylab('Probabilidad de que el equipo visitante anote goles') +
-  theme_light()
+  ggtitle('Probabilidad de que el\n equipo visitante anote goles') +
+  ylab('Probabilidad de que el equipo\n visitante anote goles') +
+  theme_light() +
+  theme(axis.text.x = element_text(size = 15)) + #tamaño de numeros en x
+  theme(axis.text.y = element_text(size = 15)) + #tamaño de numeros en y
+  theme(axis.title.x = element_text(size = 15)) + #tamaño del letrero en x
+  theme(axis.title.y = element_text(size = 15)) + #tamaño del letrero en y
+  theme(plot.title = element_text(size = 20, hjust = 0.5))    #tamaño del titulo
+
+#####Opcional, creación de animación del grafico
+library(gganimate)
+
+(e.visitante.animation <- e.visitante + transition_states(Goles, transition_length = 10) +
+    enter_grow() +
+    shadow_mark())
+#Lo generamos como video, para eso es necesario tener ffmpeg instalado
+animate(e.visitante.animation, duration = 4, renderer = ffmpeg_renderer())
+#####
 
 ggplotly(e.visitante) #versión interactiva
 
