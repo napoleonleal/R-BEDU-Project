@@ -368,3 +368,12 @@ t_origin
     ## 0.8329185
 
 ## 🏁 Conclusiones
+
+Observamos como la distribución de la media de los cocientes no era normal.
+Usamos la media muestral de 1000 muestras generadas por método bootstrap y acorde
+al Teorema del Límite Central observamos que la distribución de las medias muestrales
+bootstrap es normal.
+
+Por medio de una prueba de hipótesis y los intervalos de confianza vimos que 
+no hay evidencia significativa para establecer que la media de los cocientes 
+tienda a 1. Por tanto, podemos considerar a las variables como dependientes.
