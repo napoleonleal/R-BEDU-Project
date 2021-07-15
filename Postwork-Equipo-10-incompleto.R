@@ -549,7 +549,10 @@ View(golesxmes)
 golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 10)
 golesxmes.ts
 
-plot(golesxmes.ts) #Grafica de la serie de tiempo
+plot(golesxmes.ts, xlab = "Tiempo", ylab = "Promedio de goles", type = "o",
+     pch = 12, col = "black", lwd = 2, cex = 2) #Grafica de la serie de tiempo
+title(main = "Serie de tiempo", sub = "Frecuencia = 10", cex.sub = 1,
+      font.main =2) #modificaciones del titulo
 
 #Notemos que la frecuencia es 10 y no 12, ya que aunque la serie de tiempo se 
 #realiza tomando en cuenta los meses, las temporadas se juegan de agosto a mayo, 
