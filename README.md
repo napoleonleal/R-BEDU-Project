@@ -525,10 +525,16 @@ plot.bar <- function(data, x.lab, y.lab, f.lab, title){
        , title = title
        ) +
   theme_minimal() +
-  theme(  text = element_text(size=15)
+  theme(  text = element_text(size=20)
         , legend.title = element_text(size=10) 
         ) +
-  scale_fill_viridis(name=f.lab, direction = 1) 
+  scale_fill_viridis(name=f.lab, direction = 1) +
+  theme(  axis.text.x  = element_text(size = 15)  #tamaño de numeros en 
+        , axis.text.y  = element_text(size = 15)  #tamaño de numeros en y
+        , axis.title.x = element_text(size = 18)  #tamaño del letrero en x
+        , axis.title.y = element_text(size = 18)  #tamaño del letrero en y
+        , plot.title   = element_text(size = 20, hjust = 0.5) #tamaño del titulo
+        )    
 }
 ```
 
@@ -550,6 +556,31 @@ ggplotly(plot.local) #versión interactiva
 `````
 
 <img src="https://github.com/itzamango/postwork-equipo-10/blob/main/img/1.png?raw=true">
+
+
+## 🎞️ Animación Bar Plot P(x)
+
+
+```r
+library(gganimate)
+
+(plot.local.animation <- 
+    plot.local + 
+    transition_states(plot.local$data$Gol.Home, transition_length = 10) +
+    enter_grow() +
+    shadow_mark())
+```
+
+![barplotx](https://raw.githubusercontent.com/itzamango/postwork-equipo-10/main/img/barplotx.gif)
+
+```r
+# Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+# Tenerlo descargado y agregar la carpeta Folder_ffmpeg\bin a las variables
+# de entorno en Windows
+
+animate(plot.local.animation, duration = 2.7, renderer = ffmpeg_renderer())
+```
+
 
 ## 📋 Visitante: Probabilidad Marginal
 
@@ -589,6 +620,30 @@ ggplotly(plot.visit) #versión interactiva
 ```
 
 <img src="https://github.com/itzamango/postwork-equipo-10/blob/main/img/2.png?raw=true">
+
+
+## 🎞️ Animación Bar Plot P(y)
+
+
+```r
+(plot.visit.animation <- 
+    plot.visit + 
+    transition_states(  plot.visit$data$Gol.Away
+                      , transition_length = 10) +
+    enter_grow() +
+    shadow_mark())
+```
+
+![barploty](https://raw.githubusercontent.com/itzamango/postwork-equipo-10/main/img/barploty.gif)
+
+```r
+# Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+# Tenerlo descargado y agregar la carpeta Folder_ffmpeg\bin a las variables
+# de entorno en Windows
+
+animate(plot.visit.animation, duration = 2.7, renderer = ffmpeg_renderer())
+```
+
 
 ## 📋 Probabilidad Conjunta P(x∩y)
 
@@ -644,7 +699,13 @@ plot.heatmap <- function(data, x.lab, y.lab, f.lab, title){
           ) +
     scale_fill_viridis(  name=f.lab
                        , direction = 1 #, option = "H"
-                       ) 
+                       )  +
+    theme(  axis.text.x  = element_text(size = 15)  #tamaño de numeros en 
+    , axis.text.y  = element_text(size = 15)  #tamaño de numeros en y
+    , axis.title.x = element_text(size = 18)  #tamaño del letrero en x
+    , axis.title.y = element_text(size = 18)  #tamaño del letrero en y
+    , plot.title   = element_text(size = 20, hjust = 0.5) #tamaño del titulo
+    ) 
 }
 ```
 
@@ -667,6 +728,31 @@ ggplotly(plot.mapa.calor)    #versión interactiva
 ```
 
 <img src="https://github.com/itzamango/postwork-equipo-10/blob/main/img/3.png?raw=true">
+
+## 🎞️ Animación Heat Map P(x∩y)
+
+
+```r
+(heatmap.animation <- 
+   plot.mapa.calor + 
+   transition_states(  plot.mapa.calor$data$Probabilidad/100
+                     , transition_length = 20) +
+   enter_grow() +
+  shadow_mark())
+```
+
+![heatmapanimation](https://raw.githubusercontent.com/itzamango/postwork-equipo-10/main/img/heatmap.gif)
+
+```r
+# Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+# Tenerlo descargado y agregar la carpeta Folder_ffmpeg\bin a las variables
+# de entorno en Windows
+
+animate(heatmap.animation, duration = 7, renderer = ffmpeg_renderer())
+```
+
+
+# 
 
 # 📂 POSTWORK 4
 
