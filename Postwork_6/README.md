@@ -11,6 +11,14 @@ Vemos la informacion que contiene match.data.csv
 head(df)
 summary(df)
 ```
+     ##         date home.team home.score   away.team away.score
+     ## 1 2010-08-28  Hercules          0  Ath Bilbao          1
+     ## 2 2010-08-28   Levante          1     Sevilla          4
+     ## 3 2010-08-28    Malaga          1    Valencia          3
+     ## 4 2010-08-29   Espanol          3      Getafe          1
+     ## 5 2010-08-29 La Coruna          0    Zaragoza          0
+     ## 6 2010-08-29  Mallorca          0 Real Madrid          0
+
 
 ## 📋 Goles por mes
 
@@ -72,6 +80,8 @@ Tendencia <- gxm.decom.A$trend
 Estacionalidad <- gxm.decom.A$seasonal
 Aleatorio <- gxm.decom.A$random
 ```
+
+
 ```r
 plot(golesxmes.ts, 
      xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
