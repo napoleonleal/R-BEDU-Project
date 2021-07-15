@@ -767,11 +767,10 @@ animate(heatmap.animation, duration = 7, renderer = ffmpeg_renderer())
 Ahora obtendremos una tabla de cocientes al dividir las probabilidades
 conjuntas por el producto de las probabilidades correspondientes:
 
-$$Cocientes = \\dfrac{P\\left(x \\cap y\\right)\_{conjunta}}
-              {P\\left(x\\right)\_{marginal} P\\left(y\\right)\_{marginal}} $$
+Cocientes =  P(x∩y)/(P(x) * P(y))
 
 ``` r
-data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_02.csv")
+data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_2/Postwork_02.csv")
 ```
 
 ## 📋 Probabilidad Marginal
