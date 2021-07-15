@@ -143,7 +143,7 @@ lines(Tendencia + Estacionalidad, lwd = 2, col = "red", lty = 2)
 ```
 <img src="https://github.com/omar17md/Equipo10/blob/main/Goles%20x%20mes%20sobrepuestos.png">
 
-Modelo multiplicativo
+## 📋 Modelo multiplicativo
 
 ```r
 gxm.decom.M <- decompose(golesxmes.ts, type = "mult")
