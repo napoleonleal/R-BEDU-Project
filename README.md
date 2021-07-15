@@ -87,6 +87,14 @@ notas sobre los datos pueden encontrarse en
 
 -   [📂 Postwork 6](#p600)
 
+    -   📋 Columna “sumagoles”
+    -   📋 Promedio por mes
+    -   📋 Serie de Tiempo
+    -   📊 Serie de Tiempo
+    -   📋 Modelo Aditivo
+    -   📋 Modelo Multiplicativo
+    -   🏁 Conclusiones
+
 -   [📂 Postwork 7](#p700)
 
     -   📋 Alojar match.data.csv a match\_games
