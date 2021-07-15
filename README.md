@@ -28,11 +28,11 @@ española, obtenidos de <https://www.football-data.co.uk/spainm.php>. Más
 notas sobre los datos pueden encontrarse en
 <https://www.football-data.co.uk/notes.txt>.
 
-Link para la aplicacion Shiny: https://omar-magaa.shinyapps.io/Postwork8/
+🚀 Link para la aplicacion Shiny: https://omar-magaa.shinyapps.io/Postwork8/
 
-Link para el video: https://www.youtube.com/watch?v=mOSzWZWkoHE
+🚀 Link para el video: https://www.youtube.com/watch?v=mOSzWZWkoHE
 
-Link para el HTML interactivo: https://itzamango.github.io/postwork-equipo-10/
+🚀 Link para el HTML interactivo: https://itzamango.github.io/postwork-equipo-10/
 
 
 
