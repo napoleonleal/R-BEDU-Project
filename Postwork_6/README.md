@@ -57,7 +57,7 @@ golesxmes.ts
 plot(golesxmes.ts, xlab = "Tiempo", ylab = "Goles por mes", main = "Serie de Goles por Mes")
 ```
 
-<img src="https://github.com/omar17md/Equipo10/blob/main/GolesxMes.png">
+<img src="https://github.com/omar17md/Equipo10/blob/main/GolesxMes.png?raw=true">
 
 Modelo aditivio
 ```r
