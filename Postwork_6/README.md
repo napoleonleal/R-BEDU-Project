@@ -130,6 +130,8 @@ Tendencia[20] + Estacionalidad[20] + Aleatorio[20]
 golesxmes.ts[20]
 ```
 Ambos dan el mismo resultado
+     
+     ## 2.7
      ## 2.7
 
 ```r
@@ -139,7 +141,7 @@ plot(golesxmes.ts,
 lines(Tendencia, lwd = 2, col = "blue")
 lines(Tendencia + Estacionalidad, lwd = 2, col = "red", lty = 2)
 ```
-
+<img src="https://github.com/omar17md/Equipo10/blob/main/Goles%20x%20mes%20sobrepuestos.png">
 
 Modelo multiplicativo
 
@@ -151,6 +153,7 @@ gxm.decom.M <- decompose(golesxmes.ts, type = "mult")
 plot(gxm.decom.M, xlab = "Tiempo", 
      sub = "Descomposición de los datos de goles por mes")
 ```
+<img src="https://raw.githubusercontent.com/omar17md/Equipo10/main/modelo-multiplicativo.png">
 
 ```r
 Trend <- gxm.decom.M$trend
@@ -165,7 +168,9 @@ plot(golesxmes.ts,
      sub = "Tendencia con efectos estacionales multiplicativos sobrepuestos")
 lines(Trend, lwd = 2, col = "blue")
 lines(Trend * Seasonal, lwd = 2, col = "red", lty = 2)
-```r
+```
+
+<img src="https://raw.githubusercontent.com/omar17md/Equipo10/main/tendencia-estacionales.png">
 
 ```r
 ts.plot(cbind(Trend, Trend * Seasonal), 
@@ -174,11 +179,13 @@ ts.plot(cbind(Trend, Trend * Seasonal),
         col = c("blue", "red"), lwd = 2,
         sub = "Tendencia con efectos estacionales multiplicativos sobrepuestos")
 ```
+<img src="https://raw.githubusercontent.com/omar17md/Equipo10/main/tendencia-estacionales-2.png">
 
 ```r
 Trend[100]*Seasonal[100]*Random[100]
 golesxmes.ts[100]
 ```
+     ## 2.415094
+     ## 2.415094
 
-Ambos modelos arrojan el mismo resultado por lo que sería indistinto elegir 
-entre uno u otro
+Ambos modelos arrojan el mismo resultado por lo que sería indistinto elegir entre uno u otro
