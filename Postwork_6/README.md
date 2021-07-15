@@ -1,6 +1,6 @@
 # 📂 POSTWORK 6
 
-Importa el conjunto de datos match.data.csv a R y realiza lo siguiente:
+Importamos el conjunto de datos match.data.csv a R y realiza lo siguiente:
 
 ``` r
 df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-06/Postwork/match.data.csv")
