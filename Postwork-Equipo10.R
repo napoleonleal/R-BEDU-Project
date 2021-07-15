@@ -1,11 +1,8 @@
+#' # 🏅 EQUIPO 10 
 #' 
-#' ![](https://github.com/itzamango/postwork-equipo-10/blob/db72e18a726423d26d67b84dd08fe12731cf7df6/img/bedulogo.png?raw=true "Logo"){width="50%"}
+#' ## BEDU SANTANDER UNIVERSIDADES 
 #' 
-#' # 🏅 EQUIPO 10 {#equipo10}
-#' 
-#' ## BEDU SANTANDER UNIVERSIDADES {#bedu-santander-universidades}
-#' 
-#' ## 👩🏻🧑🏽 Integrantes {#integrantes}
+#' ## 👩🏻🧑🏽 Integrantes 
 #' 
 #' -   María Magdalena Castro Sam
 #' 
@@ -19,7 +16,7 @@
 #' 
 #' -   Efraín Soto Olmos
 #' 
-#' ### Descripción {#descripción}
+#' ### Descripción 
 #' 
 #' Éste código analiza algunos datos de la primera división de la liga
 #' española, obtenidos de <https://www.football-data.co.uk/spainm.php>. Más
@@ -27,9 +24,13 @@
 #' <https://www.football-data.co.uk/notes.txt>.
 #' 
 #' 
+#' Link para la aplicacion Shiny: https://omar-magaa.shinyapps.io/Postwork8/
 #' 
-
-#' ### Las siguientes funciones las declaramos para ser utilizadas en algunos postwork
+#' Link para el video: https://www.youtube.com/watch?v=mOSzWZWkoHE
+#' 
+#' Link para el HTML interactivo: https://itzamango.github.io/postwork-equipo-10/
+#' 
+#' 
 
 # obtener df con la probabilidad marginal y frecuencia
 get.prob.df<- function(data, team, name.gol, name.prob){ 
@@ -86,8 +87,6 @@ get.prob.joint.df <- function(data, team.h, team.a, name.h, name.a){
   as.data.frame
 }
 
-
-#' # 📂 POSTWORK 1 {#p100}
 #' 
 #' Importamos las bibliotecas con las que trabajaremos:
 #' 
@@ -398,10 +397,16 @@ plot.bar <- function(data, x.lab, y.lab, f.lab, title){
        , title = title
        ) +
   theme_minimal() +
-  theme(  text = element_text(size=15)
+  theme(  text = element_text(size=20)
         , legend.title = element_text(size=10) 
         ) +
-  scale_fill_viridis(name=f.lab, direction = 1) 
+  scale_fill_viridis(name=f.lab, direction = 1) +
+  theme(  axis.text.x  = element_text(size = 15)  #tamaño de numeros en 
+        , axis.text.y  = element_text(size = 15)  #tamaño de numeros en y
+        , axis.title.x = element_text(size = 18)  #tamaño del letrero en x
+        , axis.title.y = element_text(size = 18)  #tamaño del letrero en y
+        , plot.title   = element_text(size = 20, hjust = 0.5) #tamaño del titulo
+        )    
 }
 
 #' 
@@ -418,6 +423,29 @@ plot.local <- plot.bar(prob.m.local
 #' ## 📊 Local: P(x) Marginal
 #' 
 ggplotly(plot.local) #versión interactiva
+
+#' 
+#' ## 🎞️ Animación Bar Plot P(x)
+#' 
+
+library(gganimate)
+
+(plot.local.animation <- 
+    plot.local + 
+    transition_states(plot.local$data$Gol.Home, transition_length = 10) +
+    enter_grow() +
+    shadow_mark())
+
+
+#' 
+#' 
+#' 
+#' Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+#' Tenerlo descargado y agregar la ruta de la carpeta "folder_ffmpeg\bin" a las variables
+#' de entorno en Windows
+#' 
+## # animate(plot.local.animation, duration = 2.7, renderer = ffmpeg_renderer())
+## 
 
 #' 
 #' ## 📋 Visitante: Probabilidad Marginal
@@ -443,6 +471,26 @@ plot.visit <- plot.bar(prob.m.visit
 #' ## 📊 Visitante: P(y) Marginal
 #' 
 ggplotly(plot.visit) #versión interactiva
+
+#' 
+#' ## 🎞️ Animación Bar Plot P(y)
+#' 
+(plot.visit.animation <- 
+    plot.visit + 
+    transition_states(  plot.visit$data$Gol.Away
+                      , transition_length = 10) +
+    enter_grow() +
+    shadow_mark())
+
+
+#' 
+#' 
+#' Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+#' Tenerlo descargado y agregar la ruta de la carpeta "folder_ffmpeg\bin" a las variables
+#' de entorno en Windows
+#' 
+## #animate(plot.visit.animation, duration = 2.7, renderer = ffmpeg_renderer())
+## 
 
 #' 
 #' ## 📋 Probabilidad Conjunta P(x∩y)
@@ -484,7 +532,13 @@ plot.heatmap <- function(data, x.lab, y.lab, f.lab, title){
           ) +
     scale_fill_viridis(  name=f.lab
                        , direction = 1 #, option = "H"
-                       ) 
+                       )  +
+    theme(  axis.text.x  = element_text(size = 15)  #tamaño de numeros en 
+    , axis.text.y  = element_text(size = 15)  #tamaño de numeros en y
+    , axis.title.x = element_text(size = 18)  #tamaño del letrero en x
+    , axis.title.y = element_text(size = 18)  #tamaño del letrero en y
+    , plot.title   = element_text(size = 20, hjust = 0.5) #tamaño del titulo
+    ) 
 }
 
 #' 
@@ -502,6 +556,25 @@ plot.heatmap(  prob.joint
 #' ## 📊 Heat Map P(x∩y) Conjunta
 #' 
 ggplotly(plot.mapa.calor)    #versión interactiva
+
+#' 
+#' ## 🎞️ Animación Heat Map P(x∩y)
+#' 
+(heatmap.animation <- 
+   plot.mapa.calor + 
+   transition_states(  plot.mapa.calor$data$Probabilidad/100
+                     , transition_length = 20) +
+   enter_grow() +
+  shadow_mark())
+
+
+#' 
+#' 
+#' Lo generamos como video, para eso es necesario tener ffmpeg instalado:
+#' Tenerlo descargado y agregar la ruta de la carpeta "folder_ffmpeg\bin" a las variables
+#' de entorno en Windows
+#' 
+## #animate(heatmap.animation, duration = 7, renderer = ffmpeg_renderer())
 
 #' 
 #' # 📂 POSTWORK 4 {#p400}
@@ -541,7 +614,7 @@ get.prob.joint.tbl <- function(data, team.h, team.a, name.h, name.a){
 #' $$Cocientes = \dfrac{P\left(x \cap y\right)_{conjunta}}
 #'               {P\left(x\right)_{marginal} P\left(y\right)_{marginal}} $$
 #' 
-data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_02.csv")
+data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_2/Postwork_02.csv")
 
 #' 
 #' ## 📋 Probabilidad Marginal
@@ -649,7 +722,8 @@ obtener_media <- function(boot_splits) {
 #' 
 #' ## 📋 Medias Muestrales
 #' 
-#' Observamos el valor de la media de las medias muestrales tras aplicar la función:
+#' Observamos el valor de la media de las medias muestrales tras aplicar la
+#' función:
 #' 
 boot$means <- map_dbl(boot$splits, obtener_media)
 
@@ -661,7 +735,6 @@ length(boot$means); summary(boot$means)
 #' Comprobamos la hipótesis de que la media se encuentra en 1 con las
 #' medias muestrales bootstrap y obtenemos el intervalo de confianza al 95%
 #' con una prueba t:
-#' 
 #' 
 t_boot    <- t.test(boot$means, alternative = "two.sided", mu = 1)
 t_boot_ic <- round(t_boot$conf.int,3)
@@ -694,10 +767,13 @@ plot.histogram <- function(  data, data_mean, ic_2, n_bins
     scale_fill_viridis(name = f.lab) +
     theme_minimal() +
     #theme_ipsum() +
-    theme(  text = element_text(size=18)
-          , legend.title = element_text(size=15) 
+    theme(  axis.text=element_text(size=18)
+          , axis.title = element_text(size=24) #text = element_text(size=18)
+          , title = element_text(size=18)
+          , legend.text = element_text(size=15) 
+          , legend.title = element_text(size=20) 
           , panel.spacing = unit(0.1, "lines")
-          , strip.text.x = element_text(size = 10)
+          , strip.text.x = element_text(size = 10) + xlim(c(0.3, 1.3)) + scale_x_continuous(limits = c(-0.3, 1.3))
           #legend.position="none",
     )
 }
@@ -714,7 +790,7 @@ hist_boot <-
   plot.histogram(  boot
                , boot$means
                , t_boot_ic
-               , 18
+               , 18 #14 #12 #10  #10#10 #8 #8 #8 #5 #18
                , paste("Histograma de las medias muestrales bootstrap"
                        , "\n<i><b>n="
                        , length(boot$means)
@@ -782,6 +858,15 @@ t_origin
 
 #' 
 #' ## 🏁 Conclusiones
+#' 
+#' Observamos como la distribución de la media de los cocientes no era normal.
+#' Usamos la media muestral de 1000 muestras generadas por método bootstrap y acorde
+#' al Teorema del Límite Central observamos que la distribución de las medias muestrales
+#' bootstrap es normal.
+#' 
+#' Por medio de una prueba de hipótesis y los intervalos de confianza vimos que 
+#' no hay evidencia significativa para establecer que la media de los cocientes 
+#' tienda a 1. Por tanto, podemos considerar a las variables como dependientes.
 #' 
 #' # 📂 POSTWORK 5 {#p500}
 #' 
@@ -921,9 +1006,9 @@ class(ranking)
 #' 
 ranking[1]
 
+#' 
 ## View(ranking[1])
 
-#' 
 #' 
 #' Podemos extraer los datos de la función rank
 #' 
@@ -984,7 +1069,8 @@ prediccion = predict.fbRanks(ranking, date = fecha[n])
 
 #' 
 #' Centrándonos en las probabilidades de victoria, derrota, empate para el
-#' equipo de local como también la predicción del número de goles redondeada:
+#' equipo de local como también la predicción del número de goles
+#' redondeada:
 #' 
 
 columns <-
@@ -1037,8 +1123,9 @@ comparacion <-
 #' 
 #' ## 📋 Matriz de Confusión
 #' 
-#' Hacemos la predicción de todas las fechas de los partidos usando el objeto 
-#' ranking y obtenemos la matriz de confusión donde las clases son el número de goles
+#' Hacemos la predicción de todas las fechas de los partidos usando el
+#' objeto ranking y obtenemos la matriz de confusión donde las clases son
+#' el número de goles
 #' 
 
 prediccion.total.partidos = predict.fbRanks(ranking, date = fecha)
@@ -1073,26 +1160,27 @@ confusion.m.local <-
 (confusion.m.local)
 
 #' 
-#' Vemos que la exactitud (accuracy), que es la cantidad de predicciones positivas 
-#' que fueron correctas y que esta dada por la suma de la diagonal entre la suma
-#' total, es de 35.53%. El modelo acertó en el 35.53% de su predicción.
+#' Vemos que la exactitud (accuracy), que es la cantidad de predicciones
+#' positivas que fueron correctas y que esta dada por la suma de la
+#' diagonal entre la suma total, es de 35.53%. El modelo acertó en el
+#' 35.53% de su predicción.
 #' 
-#' Además se aprecia la relación entre los valores predecidos y los reales. 
+#' Además se aprecia la relación entre los valores predecidos y los reales.
 #' 
-#' En la sensibilidad (sensitivity), que es la proporción de casos 
-#' positivos que fueron correctamente identificados, vemos que el valor más alto
-#' es cuando predice que el equipo local anota 1 gol. El modelo acertó en el 81.77% 
-#' de las anotaciones reales que fueron de 1 gol.
+#' En la sensibilidad (sensitivity), que es la proporción de casos
+#' positivos que fueron correctamente identificados, vemos que el valor más
+#' alto es cuando predice que el equipo local anota 1 gol. El modelo acertó
+#' en el 81.77% de las anotaciones reales que fueron de 1 gol.
 #' 
-#' Al ver la distribución de la matriz notamos  que el modelo no acertó la 
-#' predicción en ningún valor de 5 a 8 goles. Ni siquiera
-#' hubo esos valores en su predicción.
+#' Al ver la distribución de la matriz notamos que el modelo no acertó la
+#' predicción en ningún valor de 5 a 8 goles. Ni siquiera hubo esos valores
+#' en su predicción.
 #' 
-#' Y el "Pos Pred Value" es la proporción de predicciones correctamente identificadas
-#' del total de predicciones para cada clase. De todos los marcadores con gol 0
-#' que predijo, el 61.53% fue acertado. Los demas están por abajo del 50%.
-#'  
-#'  
+#' Y el "Pos Pred Value" es la proporción de predicciones correctamente
+#' identificadas del total de predicciones para cada clase. De todos los
+#' marcadores con gol cero que predijo, el 61.53% fue acertado. Los demás
+#' están por abajo del 50%.
+#' 
 #' ### Matriz de confusión de la predicción de los goles del visitante
 #' 
 confusion.m.visit <-
@@ -1105,19 +1193,21 @@ confusion.m.visit <-
 
 (confusion.m.visit)
 
-#' Vemos que la exactitud (accuracy) es de 34.91%. El modelo acertó en el 34.91% de su predicción.
 #' 
-#' En la sensibilidad (sensitivity) vemos que el valor más alto
-#' es cuando predice que el equipo visitante anota 1 gol. El modelo acertó en el 77.06% 
-#' de las anotaciones reales que fueron de 1 gol.
+#' Vemos que la exactitud (accuracy) es de 34.91%. El modelo acertó en el
+#' 34.91% de su predicción.
 #' 
-#' Al ver la distribución de la matriz notamos  que el modelo no acertó la 
-#' predicción en ningún valor de 5 y 6 goles. Ni siquiera
-#' hubo esos valores en su predicción.
+#' En la sensibilidad (sensitivity) vemos que el valor más alto es cuando
+#' predice que el equipo visitante anota 1 gol. El modelo acertó en el
+#' 77.06% de las anotaciones reales que fueron de 1 gol.
 #' 
-#' Y en el "Pos Pred Value" vemos que de todos los marcadores con gol 0
-#' que predijo, el 92.30% fue acertado. Los demas están por en el 50% o debajo.
+#' Al ver la distribución de la matriz notamos que el modelo no acertó la
+#' predicción en ningún valor de 5 y 6 goles. Ni siquiera hubo esos valores
+#' en su predicción.
 #' 
+#' Y en el "Pos Pred Value" vemos que de todos los marcadores con gol cero
+#' que predijo, el 92.30% fue acertado. Los demás están por en el 50% o
+#' debajo.
 #' 
 #' ## 🏁 Conclusiones
 #' 
@@ -1131,18 +1221,158 @@ confusion.m.visit <-
 #' pueden servir como referencia, pero la predicción de resultados de
 #' juegos puede ser muy compleja, por el número de factores involucrados.
 #' 
+#' En las métricas obtenidas por la matriz de confusión de la predicción
+#' para todas las fechas con las que trabajamos obtuvimos un acierto
+#' aproximado de 35% tanto para las predicciones de los goles de casa como
+#' visitante.
+#' 
 #' # 📂 POSTWORK 6 {#p600}
 #' 
+#' Importamos el conjunto de datos match.data.csv a R:
+#' 
+
+df <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-06/Postwork/match.data.csv")
+
+head(df)
+summary(df)
 
 
+#' 
+#' Agregamos una nueva columna "sumagoles" que contiene la suma de goles
+#' por partido.
+#' 
+#' ## 📋 Columna "sumagoles"
+#' 
+df["sumagoles"] <- df$home.score+df$away.score
+
+#' 
+#' ## 📋 Promedio por mes
+#' 
+#' Obtuvimos el promedio por mes de la columna suma de goles. Revisamos el
+#' tipo de dato de la fecha
+#' 
+class(df$date)
+df$date <- as.Date(df$date)
+class(df$date)
+
+df$fecha <- format(df$date, format = "%Y-%m")
+golesxmes <- aggregate( df$sumagoles ~ df$fecha, df , mean)
+View(golesxmes)
 
 
+#' 
+#' ## 📋 Serie de Tiempo
+#' 
+#' Creamos la serie de tiempo del promedio por mes de la suma de goles
+#' hasta diciembre de 2019.
+#' 
+golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 10)
+golesxmes.ts
+
+#' 
+#' ## 📊 Serie de Tiempo
+#' 
+plot(golesxmes.ts, xlab = "Tiempo", ylab = "Promedio de goles", type = "o",
+     pch = 12, col = "black", lwd = 2, cex = 2) + #Grafica de la serie de tiempo
+title(main = "Serie de tiempo", sub = "Frecuencia = 10", cex.sub = 1,
+      font.main =2) #modificaciones del titulo
+
+
+#' 
+#' ## 📋 Modelo Aditivo
+#' 
+gxm.decom.A <- decompose(golesxmes.ts)
+plot(gxm.decom.A, xlab = "Tiempo", 
+     sub = "Descomposición de los datos de goles por mes")
+
+
+#' 
+Tendencia <- gxm.decom.A$trend
+Estacionalidad <- gxm.decom.A$seasonal
+Aleatorio <- gxm.decom.A$random
+
+plot(golesxmes.ts, 
+     xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
+     ylab = "Promedio de goles por mes", lwd = 2,
+     sub = "Tendencia con efectos estacionales aditivos sobrepuestos")  +
+     lines(Tendencia, lwd = 2, col = "blue") +
+     lines(Tendencia + Estacionalidad, lwd = 2, col = "red", lty = 2)
+
+
+#' 
+ts.plot(cbind(Tendencia, Tendencia + Estacionalidad), 
+        xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
+        ylab = "Promedio de goles por mes", lty = 1:2, 
+        col = c("blue", "red"), lwd = 2,
+        sub = "Tendencia con efectos estacionales aditivos sobrepuestos")
+
+#' 
+#' Comprobamos un punto de la suma de las componentes con la serie de
+#' tiempo
+#' 
+(Tendencia[20] + Estacionalidad[20] + Aleatorio[20])
+(golesxmes.ts[20])
+
+#' 
+plot(golesxmes.ts, 
+     xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
+     ylab = "Promedio de goles por mes", lwd = 2) +
+     lines(Tendencia, lwd = 2, col = "blue") +
+     lines(Tendencia + Estacionalidad, lwd = 2, col = "red", lty = 2)
+
+
+#' 
+#' ## 📋 Modelo Multiplicativo
+#' 
+gxm.decom.M <- decompose(golesxmes.ts, type = "mult")
+
+plot(gxm.decom.M, xlab = "Tiempo", 
+     sub = "Descomposición de los datos de goles por mes")
+
+#' 
+Trend <- gxm.decom.M$trend
+Seasonal <- gxm.decom.M$seasonal
+Random <- gxm.decom.M$random
+
+plot(golesxmes.ts, 
+     xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
+     ylab = "Promedio de goles por mes", lwd = 2,
+     sub = "Tendencia con efectos estacionales multiplicativos sobrepuestos") +
+     lines(Trend, lwd = 2, col = "blue") +
+     lines(Trend * Seasonal, lwd = 2, col = "red", lty = 2)
+
+#' 
+ts.plot(cbind(Trend, Trend * Seasonal), 
+        xlab = "Tiempo", main = "Datos de goles por mes, 2010.08 - 2019.12", 
+        ylab = "Promedio de goles por mes", lty = 1:2, 
+        col = c("blue", "red"), lwd = 2,
+        sub = "Tendencia con efectos estacionales multiplicativos sobrepuestos")
+
+#' 
+#' Comprobamos un punto de la multiplicación de las componentes con la
+#' serie de tiempo
+#' 
+Trend[20] * Seasonal[20] * Random[20]
+golesxmes.ts[20]
+
+#' 
+#' Ambos modelos arrojan el mismo resultado por lo que sería indistinto
+#' elegir entre uno u otro
+#' 
+#' ## 🏁 Conclusiones
+#' 
+#' Notemos que la frecuencia es 10 y no 12, ya que aunque la serie de
+#' tiempo se realiza tomando en cuenta los meses, las temporadas se juegan
+#' de agosto a mayo, por lo tanto como no se realizan juegos durante los
+#' meses de junio y julio sólo se toman en cuenta los 10 meses donde se
+#' generan los goles
 #' 
 #' # 📂 POSTWORK 7 {#p700}
 #' 
 library(mongolite)
 library(dplyr)
 
+#' 
 #' Importamos el csv
 #' 
 match.db <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-07/Postwork/match.data.csv")
@@ -1150,7 +1380,8 @@ match.db <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-
 #' 
 #' ## 📋 Alojar match.data.csv a match_games
 #' 
-#' Conectamos el cluster con la base de datos "match_games" y la colección "match"
+#' Conectamos el cluster con la base de datos "match_games" y la colección
+#' "match"
 #' 
 connection <- mongo(  collection = "match"
                     , db  = "match_games"
@@ -1167,6 +1398,7 @@ if (connection$count() == 0) {
 #' ## 📋 Número de Registros
 #' 
 #' Consultamos el número de registros
+#' 
 connection$count()
 
 #' 
@@ -1182,13 +1414,14 @@ query = c('{ "$or": [
         }')
 
 #' 
-#' Realizamos la consulta y 'find' convierte el resultado de la colección a dataframe
+#' Realizamos la consulta y 'find' convierte el resultado de la colección a
+#' dataframe
 #' 
 q.response <- connection$find(query)
 
 #' 
-#' Notamos que el Real Madrid solo jugó como local; 
-#' contamos los goles y vemos quien fue el equipo contrincante
+#' Notamos que el Real Madrid solo jugó como local; contamos los goles y
+#' vemos quien fue el equipo contrincante
 #' 
 n.goles  <- 
     q.response %>% 
@@ -1211,6 +1444,7 @@ cat(paste( "Cantidad de goles metidos el 20-12-2015 por el Real Madrid: "
           , sep = ""))
 if (n.goles > 4){cat(" ¡¡Fue una goleada!! ")}
 
+#' 
 #' ## 📋 Cerrar Conexión
 #' 
 #' Desconectamos la conexión
@@ -1220,17 +1454,19 @@ connection$disconnect()
 #' 
 #' Referencias:
 #' 
-#' https://cran.r-project.org/web/packages/mongolite/mongolite.pdf
+#' <https://cran.r-project.org/web/packages/mongolite/mongolite.pdf>
 #' 
-#' https://jeroen.github.io/mongolite/query-data.html
+#' <https://jeroen.github.io/mongolite/query-data.html>
 #' 
-#' https://jeroen.github.io/mongolite/manipulate-data.html
+#' <https://jeroen.github.io/mongolite/manipulate-data.html>
 #' 
 #' # 📂 POSTWORK 8 {#p800}
 #' 
-#' Debido a la identación y anidación que se genera al hacer el código
-#' se presenta por bloques comentado
+#' Link para la aplicacion Shiny:
+#' <https://omar-magaa.shinyapps.io/Postwork8/>
 #' 
+#' Debido a la identación y anidación que se genera al hacer el código se
+#' presenta por bloques comentado
 #' 
 #' ## 📋 Creamos el logo para la aplicación Shiny
 #' 
@@ -1284,6 +1520,7 @@ connection$disconnect()
 ##                        )
 ##                    ),
 
+#' 
 ##                    # Definimos el body del dashboar
 ##                    dashboardBody(
 ##                        shinyDashboardThemes(
@@ -1313,6 +1550,7 @@ connection$disconnect()
 ##                                    )
 ##                            ),
 
+#' 
 ##                            # Grafica de barras de los goles
 ##                            tabItem(tabName = "graficas",
 ##                                    fluidRow(
@@ -1326,6 +1564,7 @@ connection$disconnect()
 ##                                    ),
 ##                            ),
 
+#' 
 ##                            # Graficas Postwork 3
 ##                            tabItem(tabName = "post3",
 ##                                    fluidRow(
@@ -1340,6 +1579,7 @@ connection$disconnect()
 ##                                    )
 ##                            ),
 
+#' 
 ##                            # Data table del archivo match.data.csv
 ##                            tabItem(tabName = "data_table",
 ##                                    fluidRow(
@@ -1350,6 +1590,7 @@ connection$disconnect()
 ##                                    )
 ##                            ),
 
+#' 
 ##                            # Grafica de Momios
 ##                            tabItem(tabName = "ganacias",
 ##                                    fluidRow(
@@ -1364,6 +1605,7 @@ connection$disconnect()
 ##                                    )
 ##                            ),
 
+#' 
 ##                            # Repositorios
 ##                            tabItem(tabName = "gh",
 ##                                    fluidRow(
@@ -1381,7 +1623,9 @@ connection$disconnect()
 ##     )
 ## )
 
+#' 
 #' ## 📋 Definimos las funciones del servidor
+#' 
 ## server <- function(input, output) {
 ## 
 ##     library(ggplot2)
@@ -1393,6 +1637,7 @@ connection$disconnect()
 ##     # hasta 2020
 ##     df.resultado = read.csv("https://raw.githubusercontent.com/omar17md/ejemplo_1/main/df_resultado.csv")
 
+#' 
 ##     #Gráfico de goles
 ##     output$grafica8 <- renderPlotly({
 ##       if(input$x == "Goles Locales"){
@@ -1421,6 +1666,7 @@ connection$disconnect()
 ## 
 ##     })
 
+#' 
 ##     # Función para obtener la frecuencia y probabilidad
 ##     get.prob.df<- function(data, team, name.gol, name.prob){
 ##         team      <- enquo(team)
@@ -1444,6 +1690,7 @@ connection$disconnect()
 ##     }
 ## 
 
+#' 
 ##     # Gráficas del postwork3
 ##     # Leemos el archivo que se genero en el postwork2
 ##     data <- "https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_2/Postwork_02.csv" %>%
@@ -1483,6 +1730,7 @@ connection$disconnect()
 ##     }
 ## 
 
+#' 
 ##    #Primera grafica del postwork3
 ##    output$plotPW1 <- renderPlotly({
 ## 
@@ -1513,6 +1761,7 @@ connection$disconnect()
 ##          ggplotly(plot.visit)
 ##     })
 
+#' 
 ##     # Calculamos la probabilidad conjunta de que el equipo que juega en casa anote *'x'*
 ##     # goles y el equipo que juega como visitante anote '*y'* goles:
 ##     prob.joint <-
@@ -1543,6 +1792,7 @@ connection$disconnect()
 ##         )
 ##     }
 
+#' 
 ##     # Tercera grafica del postwork 3
 ##     output$plotPW3 <- renderPlotly({
 ##       plot.mapa.calor <-
@@ -1557,6 +1807,7 @@ connection$disconnect()
 ##     })
 ## 
 
+#' 
 ##     #Data Table
 ##     df = read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_8/match.data.csv")
 ##     output$data_table <- renderDataTable( {df},
@@ -1579,5 +1830,58 @@ connection$disconnect()
 ## shinyApp(ui = ui, server = server)
 
 #' 
-#' 
 #' # 🏁 CONCLUSIONES FINALES
+#' 
+#' En la elaboración del proyecto fue evidente que en el área de análisis
+#' de datos es necesario no sólo conocimientos de programación sino también
+#' un entendimiento claro de conceptos matemáticos y estadísticos y sobre
+#' el área del negocio para poder dar una interpretación adecuada a los
+#' datos, puesto que de otra manera podría prestarse a conclusiones
+#' erróneas o que no aportan valor a los objetivos.
+#' 
+#' El análisis de las variables juega un papel importante, en nuestro caso
+#' el descubrir que las variables de los goles no son independientes dio
+#' pie a buscar un análisis más profundo, ya que en un partido hay muchos
+#' factores que intervienen tales como las tarjetas amarillas o rojas, una
+#' lesión que ponga a un jugador fuera de juego, partidos arreglados,
+#' corrupción, entre muchos otros.
+#' 
+#' Por esta razón asegurar la victoria solo basados en los goles metidos
+#' sería erróneo. Por lo tanto podemos concluir que los datos solo pueden
+#' dar una predicción segura con cierto margen de confianza hasta cierto
+#' punto y es necesario tomar en cuenta muchos elementos.
+#' 
+#' El análisis de datos en el sector del deporte es una industria creciente
+#' pues posee gran potencial. En el caso del presente trabajo, el saber que
+#' los modelos son acertados en cuanto a predecir las probabilidades de
+#' ganar o perder en algún partido posee gran importancia pues puede dar
+#' pie a generar estrategias para planificar el entrenamiento o poner
+#' énfasis en las jugadas frente a cierto equipo, o bien a generar apuesta
+#' con un porcentaje de riesgo relativamente bajo.
+#' 
+#' Identificar las variables dependientes es una parte importante, puesto
+#' que a partir de la relación entre ellas se encontrarán patrones y
+#' tendencias. Identificarlas para hacer una propuesta a partir de ello va
+#' a dar valor a los datos. De igual manera realizar series de tiempo y
+#' saber en qué situaciones aplicarlas es de gran importancia ya que puede
+#' dar un estimado sobre las variables estacionales que se pueden presentar
+#' en los datos y poder hacer predicciones significativas.
+#' 
+#' Otros datos importantes que pueden ayudar en el contexto del fútbol son
+#' los análisis físicos puesto que a través de estas estadísticas se pueden
+#' identificar puntos de mejora para los jugadores. La comunicación de
+#' estas estadísticas físicas permite tener un mejor entendimiento entre
+#' los miembros y al conocerse mejor se puede tener una mejor dinámica de
+#' equipo lo cual es de vital importancia en el futbol, así como ayudar a
+#' los jugadores a conocer áreas de potencial mejora y entrenamiento. Los
+#' análisis sobre las jugadas y pases durante los partidos pueden ayudar a
+#' tomar decisiones tácticas y a planear mejores entrenamientos para tener
+#' un mejor rendimiento en la cancha.
+#' 
+#' A pesar de que en el futbol existen muchas variables impredecibles que
+#' influyen en el resultado de un partido, el análisis de los datos puede
+#' ser de ayuda para obtener estadísticas importantes a tomar en cuenta
+#' para fijar cursos de acción futuros. El correcto análisis de los datos
+#' puede ayudar a que se puedan puedan tomar decisiones mas informadas y
+#' objetivas, tomando en cuenta el contexto de los jugadores y del pánorama
+#' deportivo actual.
