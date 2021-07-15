@@ -59,12 +59,14 @@ plot(golesxmes.ts, xlab = "Tiempo", ylab = "Goles por mes", main = "Serie de Gol
 
 <img src="https://github.com/omar17md/Equipo10/blob/main/GolesxMes.png?raw=true">
 
-Modelo aditivio
+## 📋 Modelo aditivio
 ```r
 gxm.decom.A <- decompose(golesxmes.ts)
 plot(gxm.decom.A, xlab = "Tiempo", 
      sub = "Descomposición de los datos de goles por mes")
 ```
+<img src="https://raw.githubusercontent.com/omar17md/Equipo10/main/Modelo%20Aditivo.png">
+
 ```r
 Tendencia <- gxm.decom.A$trend
 Estacionalidad <- gxm.decom.A$seasonal
