@@ -12,6 +12,8 @@ head(df)
 summary(df)
 ```
 
+## 📋 Goles por mes
+
 Agregamos una nueva columna sumagoles que contenga la suma de goles por partido.
 ```r
 df["sumagoles"] <- df$home.score+df$away.score
@@ -42,11 +44,20 @@ golesxmes <- aggregate( df$sumagoles ~ df$fecha, df , mean)
 View(golesxmes)
 ```
 
+## 📋 Serie de tiempo
+
 Creamos la serie de tiempo del promedio por mes de la suma de goles hasta diciembre de 2019.
 ```r
 golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 12)
 golesxmes.ts
 ```
+
+## 📊 Graficamos la serie de tiempo 
+```r
+plot(golesxmes.ts, xlab = "Tiempo", ylab = "Goles por mes", main = "Serie de Goles por Mes")
+``
+
+<img src="https://github.com/omar17md/Equipo10/blob/main/GolesxMes.png">
 
 Modelo aditivio
 ```r
