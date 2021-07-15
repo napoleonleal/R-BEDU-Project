@@ -7,7 +7,7 @@ $$Cocientes = \\dfrac{P\\left(x \\cap y\\right)\_{conjunta}}
               {P\\left(x\\right)\_{marginal} P\\left(y\\right)\_{marginal}} $$
 
 ``` r
-data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_02.csv")
+data <- read.csv("https://raw.githubusercontent.com/napoleonleal/R-BEDU-Project/main/Postwork_2/Postwork_02.csv")
 ```
 
 ## 📋 Probabilidad Marginal
