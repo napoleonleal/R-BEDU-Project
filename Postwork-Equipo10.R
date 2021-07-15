@@ -26,8 +26,10 @@
 #' notas sobre los datos pueden encontrarse en
 #' <https://www.football-data.co.uk/notes.txt>.
 #' 
-#' # 📂 POSTWORK 1 {#p100}
 #' 
+#' 
+
+#' ### Las siguientes funciones las declaramos para ser utilizadas en algunos postwork
 
 # obtener df con la probabilidad marginal y frecuencia
 get.prob.df<- function(data, team, name.gol, name.prob){ 
@@ -84,6 +86,8 @@ get.prob.joint.df <- function(data, team.h, team.a, name.h, name.a){
   as.data.frame
 }
 
+
+#' # 📂 POSTWORK 1 {#p100}
 #' 
 #' Importamos las bibliotecas con las que trabajaremos:
 #' 
