@@ -55,7 +55,7 @@ golesxmes.ts
 ## 📊 Graficamos la serie de tiempo 
 ```r
 plot(golesxmes.ts, xlab = "Tiempo", ylab = "Goles por mes", main = "Serie de Goles por Mes")
-``
+```
 
 <img src="https://github.com/omar17md/Equipo10/blob/main/GolesxMes.png">
 
