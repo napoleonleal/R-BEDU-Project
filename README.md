@@ -2489,3 +2489,57 @@ shinyApp(ui = ui, server = server)
 
 # 🏁 CONCLUSIONES FINALES
 
+En la elaboración del proyecto fue evidente que en el área de análisis
+de datos es necesario no sólo conocimientos de programación sino también
+un entendimiento claro de conceptos matemáticos y estadísticos y sobre
+el área del negocio para poder dar una interpretación adecuada a los
+datos, puesto que de otra manera podría prestarse a conclusiones
+erróneas o que no aportan valor a los objetivos.
+
+El análisis de las variables juega un papel importante, en nuestro caso
+el descubrir que las variables de los goles no son independientes dio
+pie a buscar un análisis más profundo, ya que en un partido hay muchos
+factores que intervienen tales como las tarjetas amarillas o rojas, una
+lesión que ponga a un jugador fuera de juego, partidos arreglados,
+corrupción, entre muchos otros.
+
+Por esta razón asegurar la victoria solo basados en los goles metidos
+sería erróneo. Por lo tanto podemos concluir que los datos solo pueden
+dar una predicción segura con cierto margen de confianza hasta cierto
+punto y es necesario tomar en cuenta muchos elementos.
+
+El análisis de datos en el sector del deporte es una industria creciente
+pues posee gran potencial. En el caso del presente trabajo, el saber que
+los modelos son acertados en cuanto a predecir las probabilidades de
+ganar o perder en algún partido posee gran importancia pues puede dar
+pie a generar estrategias para planificar el entrenamiento o poner
+énfasis en las jugadas frente a cierto equipo, o bien a generar apuesta
+con un porcentaje de riesgo relativamente bajo.
+
+Identificar las variables dependientes es una parte importante, puesto
+que a partir de la relación entre ellas se encontrarán patrones y
+tendencias. Identificarlas para hacer una propuesta a partir de ello va
+a dar valor a los datos. De igual manera realizar series de tiempo y
+saber en qué situaciones aplicarlas es de gran importancia ya que puede
+dar un estimado sobre las variables estacionales que se pueden presentar
+en los datos y poder hacer predicciones significativas.
+
+Otros datos importantes que pueden ayudar en el contexto del fútbol son
+los análisis físicos puesto que a través de estas estadísticas se pueden
+identificar puntos de mejora para los jugadores. La comunicación de
+estas estadísticas físicas permite tener un mejor entendimiento entre
+los miembros y al conocerse mejor se puede tener una mejor dinámica de
+equipo lo cual es de vital importancia en el futbol, así como ayudar a
+los jugadores a conocer áreas de potencial mejora y entrenamiento. Los
+análisis sobre las jugadas y pases durante los partidos pueden ayudar a
+tomar decisiones tácticas y a planear mejores entrenamientos para tener
+un mejor rendimiento en la cancha.
+
+A pesar de que en el futbol existen muchas variables impredecibles que
+influyen en el resultado de un partido, el análisis de los datos puede
+ser de ayuda para obtener estadísticas importantes a tomar en cuenta
+para fijar cursos de acción futuros. El correcto análisis de los datos
+puede ayudar a que se puedan puedan tomar decisiones mas informadas y
+objetivas, tomando en cuenta el contexto de los jugadores y del pánorama
+deportivo actual.
+
