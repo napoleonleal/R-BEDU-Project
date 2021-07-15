@@ -1,71 +1,63 @@
+# Importamos bibliotecas:
 library(dplyr)
+library(magrittr)
 
-####################################################################################
-# 1     Importa los datos de soccer de las temporadas 2017/2018, 2018/2019 y 2019/2020 
-#       de la primera división de la liga española a R, los datos los puedes encontrar 
-#       en el siguiente enlace: https://www.football-data.co.uk/spainm.php
+### Importar datos
+# Ahora agregamos aún más datos. Utilizaremos los datos de las temporadas 2017/2018, 2018/2019 y 2019/2020.
+temporadas <- c( SP1.1718 = "https://www.football-data.co.uk/mmz4281/1718/SP1.csv"
+               , SP1.1819 = "https://www.football-data.co.uk/mmz4281/1819/SP1.csv"
+               , SP1.1920 = "https://www.football-data.co.uk/mmz4281/1920/SP1.csv"
+               ) %>% lapply(read.csv)
 
-# Creamos una lista SP1 con la informacion de cada archivo CSV
-SP1 <- list(SP1.1718 = read.csv("https://www.football-data.co.uk/mmz4281/1718/SP1.csv")
-          , SP1.1819 = read.csv("https://www.football-data.co.uk/mmz4281/1819/SP1.csv")
-          , SP1.1920 = read.csv("https://www.football-data.co.uk/mmz4281/1920/SP1.csv")
-       )
+### Revisión de estructura de los datos
+# Revisamos su estructura
+get.info <- function(data){
+  data %>% str
+  data %>% head
+  data %>% summary
+  data %>% View
+}
 
-####################################################################################
-# 2     Revisa la estructura de de los data frames al usar las 
-#       funciones: str, head, View y summary
+temporadas["SP1.1718"] %>% get.info
+temporadas["SP1.1819"] %>% get.info
+temporadas["SP1.1920"] %>% get.info
 
-# Inspeccionamos los datos
-# Encontramos un formato de fecha distinto en un CSV ("SP1.1718")
-lapply(SP1, summary)
-lapply(SP1, head)
-lapply(SP1, View)
-lapply(SP1, str)
+# Vemos que hay un diferente formato de fechas en la temporada 17/18.
 
-####################################################################################
-# 3     Con la función select del paquete dplyr selecciona únicamente las columnas 
-#       Date, HomeTeam, AwayTeam, FTHG, FTAG y FTR; esto para cada uno de 
-#       los data frames. (Hint: también puedes usar lapply).
-  
-# Hacemos un vector con los nombres de las columnas de interes
-columns <- c(
-  "Date"
-  ,"HomeTeam" 
-  ,"AwayTeam"
-  ,"FTHG"
-  ,"FTAG"
-  ,"FTR"
-)
+#### Selección de columnas
+# Seleccionamos sólo las columnas de interés:
+columns <- c(  "Date"
+             , "HomeTeam" 
+             , "AwayTeam"
+             , "FTHG"
+             , "FTAG"
+             , "FTR"
+             )
 
-# Extraemos las columnas de interes
-SP1 <- lapply(SP1, select, all_of(columns)) # Warning sin el all_of()
+temporadas %<>% lapply(select, all_of(columns)) 
 
-####################################################################################
-# 4     Asegúrate de que los elementos de las columnas correspondientes de los 
-#       nuevos data frames sean del mismo tipo (Hint 1: usa as.Date y mutate 
-#       para arreglar las fechas). Con ayuda de la función rbind forma 
-#       un único data frame que contenga las seis columnas mencionadas en el punto 3 
-#       (Hint 2: la función do.call podría ser utilizada).
+###  Corrección y Unión de datos
+# Revisamos que las columnas sean del mismo tipo, corregimos el error de formato 
+# y tipo de dato de la columna Date y unimos en un solo data frame:
+data <- temporadas %>% unname %>% do.call(rbind, .)
+# Corrección del formato de fecha usando una expresión regular
+data %<>% mutate(Date = gsub("/(1[78])$", "/20\\1", Date))  
+# Correccioón del tipo de dato
+data %<>% mutate(Date = as.Date(Date, "%d/%m/%Y"))
 
-# Revisamos los tipos de datos
-lapply(SP1, str)
+head(data$Date)
 
-# Cambiamos un formato de fecha distinto en un CSV usando regex
-csv.name <- "SP1.1718"
-SP1[[csv.name]]$Date <- gsub("([0-3][0-9])/([0-1][0-9])/([0-3][0-9])$"
-      , "\\1/\\2/20\\3"
-      , SP1[[csv.name]]$Date)
+# data frame final solo con los datos elegidos
+(dim(data))
 
-# Convertimos las columnas de nombre "Date" en formato Date
-SP1 <- lapply(SP1, function(x)
-            mutate(x,
-               Date = as.Date(Date, "%d/%m/%Y")))
+### Escritura de archivo corregido
+# Guardamos el data frame obtenido en formato csv en una carpeta llamada “equipo10”:
+w.dir   <- getwd()
+sub.dir <- "equipo10"
+path    <- file.path(w.dir, sub.dir)
+dir.create(path, showWarnings = F, recursive = T)
+setwd(path)
 
-# Unimos todo en un data frame
-data <- do.call(rbind, unname(SP1))
-
-# Obtenemos el dataset con el que trabajaremos
-(data)
-
-# Exportamos el dataframe a CSV
-write.csv(data, "Postwork_02.csv")
+# Guardamos el df en un archivo csv
+write.csv(data, file = 'Postwork_02.csv', row.names = FALSE)
+setwd(w.dir)
