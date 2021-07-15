@@ -4,6 +4,8 @@ library(dplyr)
 # Obtenemos el csv
 match.db <- read.csv("https://raw.githubusercontent.com/beduExpert/Programacion-R-Santander-2021/main/Sesion-07/Postwork/match.data.csv")
 
+### Alojar match.data.csv a match_games
+
 # Conectamos con la base de datos match_games y la colección match
 connection <- mongo(collection = "match"
                     , db ="match_games"
@@ -14,6 +16,10 @@ if (connection$count() == 0) {
   connection$insert(match.db)
 }
 
+### Número de Registros
+# Consultamos el número de registros
+connection$count()
+
 # Armamnos el cuerpo de la consulta con sintaxis de mongo
 query = c('{ "$or": [ 
                     {"home_team": "Real Madrid"}
@@ -23,18 +29,31 @@ query = c('{ "$or": [
         }')
 
 # Realizamos la consulta y find convierte el resultado de la colección a dataframe
-q.result <- connection$find(query)
+q.response <- connection$find(query)
 
 # Notamos que el Real Madrid solo jugó como home; 
 # contamos los goles y vemos quien fue el equipo contrincante
-n.goles  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(home_score) %>% sum()
-vs.team  <- q.result %>% filter(home_team == "Real Madrid") %>% pull(away_team)
+n.goles  <- 
+    q.response %>% 
+    filter(home_team == "Real Madrid") %>% 
+    pull(home_score) %>% 
+    sum()
+
+vs.team  <-
+    q.response %>% 
+    filter(home_team == "Real Madrid") %>%
+    pull(away_team)
+
 
 # Vemos los resultados
-print(paste(  c('Cantidad de goles metidos el 20-12-2015 por el Real Madrid:'), n.goles
-             ,c('contra el equipo:'), vs.team))
+cat(paste( "Cantidad de goles metidos el 20-12-2015 por el Real Madrid: "
+          , n.goles , "\n"
+          , "Contra el equipo: "
+          , vs.team
+          , sep = ""))
 
-print("¡¡Fue una goleada!!")
+
+if (n.goles > 4){cat(" ¡¡Fue una goleada!! ")}
 
 # Desconectamos la conexión
 connection$disconnect()
