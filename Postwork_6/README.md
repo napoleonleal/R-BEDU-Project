@@ -11,13 +11,14 @@ Vemos la informacion que contiene match.data.csv
 head(df)
 summary(df)
 ```
-     ##         date home.team home.score   away.team away.score
-     ## 1 2010-08-28  Hercules          0  Ath Bilbao          1
-     ## 2 2010-08-28   Levante          1     Sevilla          4
-     ## 3 2010-08-28    Malaga          1    Valencia          3
-     ## 4 2010-08-29   Espanol          3      Getafe          1
-     ## 5 2010-08-29 La Coruna          0    Zaragoza          0
-     ## 6 2010-08-29  Mallorca          0 Real Madrid          0
+     ##       date home.team home.score   away.team away.score
+     ## 2010-08-28  Hercules          0  Ath Bilbao          1
+     ## 2010-08-28   Levante          1     Sevilla          4
+     ## 2010-08-28    Malaga          1    Valencia          3
+     ## 2010-08-29   Espanol          3      Getafe          1
+     ## 2010-08-29 La Coruna          0    Zaragoza          0
+     ## 2010-08-29  Mallorca          0 Real Madrid          0
+     ## ....
 
 
 ## 📋 Goles por mes
@@ -51,6 +52,18 @@ golesxmes <- aggregate( df$sumagoles ~ df$fecha, df , mean)
 ```r
 View(golesxmes)
 ```
+     ##       date   home.team home.score   away.team away.score sumagoles   fecha
+     ## 2010-08-28    Hercules          0  Ath Bilbao          1         1 2010-08
+     ## 2010-08-28     Levante          1     Sevilla          4         5 2010-08
+     ## 2010-08-28      Malaga          1    Valencia          3         4 2010-08
+     ## 2010-08-29     Espanol          3      Getafe          1         4 2010-08
+     ## 2010-08-29   La Coruna          0    Zaragoza          0         0 2010-08
+     ## 2010-08-29    Mallorca          0 Real Madrid          0         0 2010-08
+     ## 2010-08-29     Osasuna          0     Almeria          0         0 2010-08
+     ## 2010-08-29   Santander          0   Barcelona          3         3 2010-08
+     ## 2010-08-29    Sociedad          1  Villarreal          0         1 2010-08
+     ## ...
+
 
 ## 📋 Serie de tiempo
 
@@ -59,6 +72,8 @@ Creamos la serie de tiempo del promedio por mes de la suma de goles hasta diciem
 golesxmes.ts <- ts(golesxmes[ ,2], start = c(2010,08), end = c(2019,12), frequency = 12)
 golesxmes.ts
 ```
+
+
 
 ## 📊 Graficamos la serie de tiempo 
 ```r
