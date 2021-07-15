@@ -578,19 +578,25 @@ confusion.m.visit <-
     ## Detection Prevalence 0.000000
     ## Balanced Accuracy    0.500000
 
-Vemos que la exactitud (accuracy) es de 34.91%. El modelo acertó en el
-34.91% de su predicción.
+Vemos que la exactitud (accuracy), que es la cantidad de predicciones positivas 
+que fueron correctas y que esta dada por la suma de la diagonal entre la suma
+total, es de 35.53%. El modelo acertó en el 35.53% de su predicción.
 
-En la sensibilidad (sensitivity) vemos que el valor más alto es cuando
-predice que el equipo visitante anota 1 gol. El modelo acertó en el
-77.06% de las anotaciones reales que fueron de 1 gol.
+Además se aprecia la relación entre los valores predecidos y los reales. 
 
-Al ver la distribución de la matriz notamos que el modelo no acertó la
-predicción en ningún valor de 5 y 6 goles. Ni siquiera hubo esos valores
-en su predicción.
+En la sensibilidad (sensitivity), que es la proporción de casos positivos que 
+fueron correctamente identificados, vemos que el valor más alto es cuando 
+predice que el equipo local anota 1 gol. El modelo acertó en el 81.77% de las 
+anotaciones reales que fueron de 1 gol.
 
-Y en el “Pos Pred Value” vemos que de todos los marcadores con gol 0 que
-predijo, el 92.30% fue acertado. Los demas están por en el 50% o debajo.
+Al ver la distribución de la matriz notamos  que el modelo no acertó la 
+predicción en ningún valor de 5 a 8 goles. Ni siquiera hubo esos valores en su 
+predicción.
+
+Y el "Pos Pred Value" es la proporción de predicciones correctamente identificadas
+del total de predicciones para cada clase. De todos los marcadores con gol cero
+que predijo, el 61.53% fue acertado. Los demás están por abajo del 50%.
+
 
 ## 🏁 Conclusiones
 
@@ -603,3 +609,7 @@ reduce la posible sobre-estimación de estos casos, debido a su rareza,
 de 10 partidos acertó totalmente en 1 partido, por lo que estos análisis
 pueden servir como referencia, pero la predicción de resultados de
 juegos puede ser muy compleja, por el número de factores involucrados.
+
+En las métricas obtenidas por la matriz de confusión de la predicción
+para todas las fechas con las que trabajamos obtuvimos un acierto aproximado
+de 35% tanto para las predicciones de los goles de casa como visitante.
