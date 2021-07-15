@@ -3,6 +3,7 @@ library(dplyr)
 library(magrittr)
 
 ### Importar datos
+
 # Ahora agregamos aún más datos. Utilizaremos los datos de las temporadas 2017/2018, 2018/2019 y 2019/2020.
 temporadas <- c( SP1.1718 = "https://www.football-data.co.uk/mmz4281/1718/SP1.csv"
                , SP1.1819 = "https://www.football-data.co.uk/mmz4281/1819/SP1.csv"
@@ -25,6 +26,7 @@ temporadas["SP1.1920"] %>% get.info
 # Vemos que hay un diferente formato de fechas en la temporada 17/18.
 
 #### Selección de columnas
+
 # Seleccionamos sólo las columnas de interés:
 columns <- c(  "Date"
              , "HomeTeam" 
@@ -37,6 +39,7 @@ columns <- c(  "Date"
 temporadas %<>% lapply(select, all_of(columns)) 
 
 ###  Corrección y Unión de datos
+
 # Revisamos que las columnas sean del mismo tipo, corregimos el error de formato 
 # y tipo de dato de la columna Date y unimos en un solo data frame:
 data <- temporadas %>% unname %>% do.call(rbind, .)
@@ -51,6 +54,7 @@ head(data$Date)
 (dim(data))
 
 ### Escritura de archivo corregido
+
 # Guardamos el data frame obtenido en formato csv en una carpeta llamada “equipo10”:
 w.dir   <- getwd()
 sub.dir <- "equipo10"
